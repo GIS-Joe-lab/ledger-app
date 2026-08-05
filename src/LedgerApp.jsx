@@ -281,13 +281,13 @@ export default class LedgerApp extends React.Component {
       formAmount, formDate, formCategory, formDescription, formFrequency, formOngoing, formEndDate, formBankAccount, formEarner,
       formAutoPay, formAutoPayDate } = this.state;
     const vm = this.computeViewModel();
-    const { userEmail, onSignOut } = this.props;
+    const { onSignOut } = this.props;
 
     const bankTagList = bankAccounts.map(b => ({ name: b, onRemove: () => this.removeBank(b) }));
 
     return (
       <div className="ledger-shell" style={{ display: 'flex', flexDirection: 'row', minHeight: '100vh', background: 'var(--color-bg)', color: 'var(--color-text)', fontFamily: 'var(--font-body)' }}>
-        <Sidebar view={view} onSetView={this.setView} onAddBank={this.openAddBank} userEmail={userEmail} onSignOut={onSignOut} />
+        <Sidebar view={view} onSetView={this.setView} onAddBank={this.openAddBank} onSignOut={onSignOut} />
 
         <main className="ledger-main" style={{ flex: 1, padding: 'var(--space-8) var(--space-8)', display: 'flex', flexDirection: 'column', gap: 'var(--space-6)', minWidth: 0 }}>
           <MonthHeader

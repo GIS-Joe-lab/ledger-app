@@ -118,6 +118,6 @@ export default class AuthGate extends React.Component {
       );
     }
 
-    return <LedgerApp cloud={this.makeCloud(user.uid)} onSignOut={() => signOut(auth)} userEmail={user.email} />;
+    return <LedgerApp cloud={this.makeCloud(user.uid)} onSignOut={() => signOut(auth)} />;
   }
 }
