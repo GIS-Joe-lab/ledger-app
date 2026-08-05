@@ -1,8 +1,6 @@
 export const INCOME_CATEGORIES = ['Salary', 'Freelance', 'Investment', 'Rental', 'Gift', 'Other'];
-export const RENTAL_CATEGORIES = ['Rental Mortgage', 'Rental Condo Fee', 'Rental Property Insurance', 'Rental Property Tax', 'Rental Extra Payment'];
-export const PERSONAL_CATEGORIES = ['Personal Mortgage', 'Personal Condo Fee', 'Personal Property Insurance', 'Personal Property Tax', 'Personal Extra Payment'];
-export const OTHER_EXPENSE_CATEGORIES = ['Utilities', 'Groceries', 'Transport', 'Entertainment', 'Health', 'Shopping', 'Car Insurance', 'Mobile Plan', 'Landscaping', 'Other'];
-export const EXPENSE_CATEGORIES = [...RENTAL_CATEGORIES, ...PERSONAL_CATEGORIES, ...OTHER_EXPENSE_CATEGORIES];
+export const EXPENSE_CATEGORIES = ['Utilities', 'Groceries', 'Transport', 'Entertainment', 'Health', 'Shopping', 'Car Insurance', 'Mobile Plan', 'Landscaping', 'Mortgage', 'Other'];
+export const MORTGAGE_CATEGORIES = ['Mortgage'];
 export const STORAGE_KEY = 'nocturne-ledger-entries-v1';
 export const BANK_STORAGE_KEY = 'nocturne-ledger-banks-v1';
 export const FREQUENCIES = ['One-time', 'Weekly', 'Bi-weekly', 'Monthly', 'Bi-monthly', 'Quarterly', 'Yearly'];
@@ -41,10 +39,7 @@ export const PALETTE = {
 export const CATEGORY_COLORS = {
   Salary: PALETTE.plainBlue, Freelance: PALETTE.plainGreen, Investment: PALETTE.plainYellow,
   Rental: PALETTE.plainPurple, Gift: PALETTE.plainPink, Other: PALETTE.lavender,
-  'Rental Mortgage': PALETTE.lemon, 'Rental Condo Fee': PALETTE.royalBlue, 'Rental Property Insurance': PALETTE.maroonRed,
-  'Rental Property Tax': PALETTE.forest, 'Rental Extra Payment': PALETTE.plum,
-  'Personal Mortgage': PALETTE.peach, 'Personal Condo Fee': PALETTE.skyBlue, 'Personal Property Insurance': PALETTE.hotPink,
-  'Personal Property Tax': PALETTE.lime, 'Personal Extra Payment': PALETTE.indigo,
+  Mortgage: PALETTE.lemon,
   Utilities: PALETTE.turquoise, Groceries: PALETTE.gold, Transport: PALETTE.navy, Entertainment: PALETTE.coralPink,
   Health: PALETTE.deepTeal, Shopping: PALETTE.burntOrange, 'Car Insurance': PALETTE.periwinkle, 'Mobile Plan': PALETTE.olive,
   Landscaping: PALETTE.mint,

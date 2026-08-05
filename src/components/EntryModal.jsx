@@ -4,25 +4,40 @@ const stopClick = (e) => e.stopPropagation();
 
 export default function EntryModal({
   modalTitle, onClose, onSubmit,
+  formTitle, onTitleChange,
   formAmount, onAmountChange,
   formDate, onDateChange,
   formCategory, onCategoryChange, isModalIncome, isModalExpense,
-  categoryOptions, rentalCategoryOptions, personalCategoryOptions, otherExpenseCategoryOptions,
+  categoryOptions,
   hasBanks, noBanks, bankAccounts, formBankAccount, onBankAccountChange, onAddBank,
   earnerLabel, formEarner, onEarnerChange,
   formDescription, onDescriptionChange,
   formOngoing, onOngoingChange, formNotOngoing, formEndDate, onEndDateChange,
   formFrequency, frequencyOptions, onFrequencyChange,
   formAutoPay, onAutoPayChange, formAutoPayDate, onAutoPayDateChange,
+  isMortgageCategory, onOpenMortgageModal,
 }) {
+  const effectiveFrequency = isMortgageCategory ? 'Monthly' : formFrequency;
   return (
     <div className="dialog-backdrop" onClick={onClose}>
       <form className="dialog" onSubmit={onSubmit} onClick={stopClick}>
         <div className="dialog-title">{modalTitle}</div>
 
         <div className="field">
+          <label>Title</label>
+          <input className="input" type="text" required value={formTitle} onChange={onTitleChange} placeholder="e.g. Paycheck, Grocery run" />
+        </div>
+
+        <div className="field">
           <label>Amount</label>
-          <input className="input" type="number" min="0.01" step="0.01" required value={formAmount} onChange={onAmountChange} placeholder="0.00" />
+          {isMortgageCategory ? (
+            <div style={{ display: 'flex', gap: 8 }}>
+              <input className="input" type="text" readOnly value={formAmount ? ('$' + formAmount) : ''} placeholder="Set via mortgage calculator" style={{ cursor: 'pointer' }} onClick={onOpenMortgageModal} />
+              <button type="button" className="btn btn-secondary" style={{ flex: 'none' }} onClick={onOpenMortgageModal}>{formAmount ? 'Edit' : 'Calculate'}</button>
+            </div>
+          ) : (
+            <input className="input" type="number" min="0.01" step="0.01" required value={formAmount} onChange={onAmountChange} placeholder="0.00" />
+          )}
         </div>
 
         <div className="field">
@@ -32,19 +47,13 @@ export default function EntryModal({
 
         <div className="field">
           <label>Category</label>
-          <select className="input" value={formCategory} onChange={onCategoryChange}>
-            {isModalIncome && categoryOptions.map((opt) => <option key={opt} value={opt}>{opt}</option>)}
-            {isModalExpense && (
-              <>
-                <optgroup label="Rental Property">
-                  {rentalCategoryOptions.map((opt) => <option key={opt} value={opt}>{opt}</option>)}
-                </optgroup>
-                <optgroup label="Personal Property">
-                  {personalCategoryOptions.map((opt) => <option key={opt} value={opt}>{opt}</option>)}
-                </optgroup>
-                {otherExpenseCategoryOptions.map((opt) => <option key={opt} value={opt}>{opt}</option>)}
-              </>
-            )}
+          <select
+            className="input" value={formCategory} onChange={onCategoryChange} required
+            disabled={isMortgageCategory}
+            style={isMortgageCategory ? { opacity: 0.6, cursor: 'not-allowed' } : undefined}
+          >
+            <option value="" disabled>Select category</option>
+            {categoryOptions.map((opt) => <option key={opt} value={opt}>{opt}</option>)}
           </select>
         </div>
 
@@ -102,12 +111,12 @@ export default function EntryModal({
 
         <div className="field">
           <label>Recurrence</label>
-          <select className="input" value={formFrequency} onChange={onFrequencyChange}>
+          <select className="input" value={effectiveFrequency} onChange={onFrequencyChange} disabled={isMortgageCategory} style={isMortgageCategory ? { opacity: 0.6, cursor: 'not-allowed' } : undefined}>
             {frequencyOptions.map((freq) => <option key={freq} value={freq}>{freq}</option>)}
           </select>
         </div>
 
-        {formFrequency !== 'One-time' && (
+        {effectiveFrequency !== 'One-time' && (
           <div className="field">
             <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', color: 'var(--color-text)' }}>
               <input type="checkbox" checked={formOngoing} onChange={onOngoingChange} style={{ width: 16, height: 16, accentColor: 'var(--color-accent)', cursor: 'pointer' }} />
@@ -116,7 +125,7 @@ export default function EntryModal({
           </div>
         )}
 
-        {formFrequency !== 'One-time' && formNotOngoing && (
+        {effectiveFrequency !== 'One-time' && formNotOngoing && (
           <div className="field">
             <label>End date</label>
             <input className="input" type="date" required value={formEndDate} onChange={onEndDateChange} />
@@ -125,7 +134,7 @@ export default function EntryModal({
 
         <div className="dialog-actions">
           <button type="button" className="btn btn-secondary" onClick={onClose}>Cancel</button>
-          <button type="submit" className="btn btn-primary">Save</button>
+          <button type="submit" className="btn btn-primary" disabled={!formCategory || (isMortgageCategory && !(parseFloat(formAmount) > 0))}>Save</button>
         </div>
       </form>
     </div>

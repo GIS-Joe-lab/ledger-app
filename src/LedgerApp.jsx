@@ -1,9 +1,10 @@
 import React from 'react';
-import { INCOME_CATEGORIES, RENTAL_CATEGORIES, PERSONAL_CATEGORIES, OTHER_EXPENSE_CATEGORIES, EXPENSE_CATEGORIES, STORAGE_KEY, BANK_STORAGE_KEY, FREQUENCIES } from './constants.js';
+import { INCOME_CATEGORIES, EXPENSE_CATEGORIES, MORTGAGE_CATEGORIES, STORAGE_KEY, BANK_STORAGE_KEY, FREQUENCIES } from './constants.js';
 import { categoryStyle } from './utils/category.js';
 import { buildDonutSegments } from './utils/donut.js';
 import { occurrencesInMonth } from './utils/recurrence.js';
 import { fmtMoney, fmtDate } from './utils/format.js';
+import { monthlyMortgageTotal } from './utils/mortgage.js';
 import Sidebar from './components/Sidebar.jsx';
 import MonthHeader from './components/MonthHeader.jsx';
 import OverviewView from './components/OverviewView.jsx';
@@ -11,6 +12,7 @@ import IncomeView from './components/IncomeView.jsx';
 import ExpenseView from './components/ExpenseView.jsx';
 import EntryModal from './components/EntryModal.jsx';
 import BankModal from './components/BankModal.jsx';
+import MortgageModal from './components/MortgageModal.jsx';
 
 export default class LedgerApp extends React.Component {
   state = (() => {
@@ -27,6 +29,7 @@ export default class LedgerApp extends React.Component {
       modalOpen: false,
       modalType: 'income',
       editingId: null,
+      formTitle: '',
       formAmount: '',
       formDate: '',
       formCategory: '',
@@ -38,6 +41,14 @@ export default class LedgerApp extends React.Component {
       formEarner: 'Me',
       formAutoPay: false,
       formAutoPayDate: '',
+      mortgageModalOpen: false,
+      formMortgageLoanAmount: '',
+      formMortgageInterestRate: '',
+      formMortgageTermYears: '',
+      formMortgageHomeInsurance: '',
+      formMortgageFloodInsurance: '',
+      formMortgagePropertyTax: '',
+      formMortgageExtraPayment: '',
     };
   })();
 
@@ -108,54 +119,101 @@ export default class LedgerApp extends React.Component {
     const isCurrent = now.getFullYear() === viewYear && now.getMonth() === viewMonth;
     const day = isCurrent ? now.getDate() : 1;
     const dateStr = viewYear + '-' + String(viewMonth + 1).padStart(2, '0') + '-' + String(day).padStart(2, '0');
-    const cats = type === 'income' ? INCOME_CATEGORIES : EXPENSE_CATEGORIES;
     this.setState({
       modalOpen: true, modalType: type, editingId: null,
-      formAmount: '', formDate: dateStr, formCategory: cats[0],
+      formTitle: '', formAmount: '', formDate: dateStr, formCategory: '',
       formDescription: '', formFrequency: 'One-time', formOngoing: true, formEndDate: '',
       formBankAccount: this.state.bankAccounts[0] || '',
       formEarner: 'Me',
       formAutoPay: false, formAutoPayDate: '',
+      formMortgageLoanAmount: '', formMortgageInterestRate: '', formMortgageTermYears: '',
+      formMortgageHomeInsurance: '', formMortgageFloodInsurance: '', formMortgagePropertyTax: '', formMortgageExtraPayment: '',
     });
   }
 
   openEdit(entry) {
+    const m = entry.mortgage || {};
     this.setState({
       modalOpen: true, modalType: entry.type, editingId: entry.id,
+      formTitle: entry.title || '',
       formAmount: String(entry.amount), formDate: entry.date, formCategory: entry.category,
       formDescription: entry.description || '', formFrequency: entry.frequency || 'One-time',
       formOngoing: entry.ongoing !== false, formEndDate: entry.endDate || '',
       formBankAccount: entry.bankAccount || '',
       formEarner: entry.earner || 'Me',
       formAutoPay: entry.autoPay || false, formAutoPayDate: entry.autoPayDate || '',
+      formMortgageLoanAmount: entry.mortgage ? String(m.loanAmount) : '',
+      formMortgageInterestRate: entry.mortgage ? String(m.interestRate) : '',
+      formMortgageTermYears: entry.mortgage ? String(m.termYears) : '',
+      formMortgageHomeInsurance: entry.mortgage ? String(m.homeInsurance) : '',
+      formMortgageFloodInsurance: entry.mortgage ? String(m.floodInsurance) : '',
+      formMortgagePropertyTax: entry.mortgage ? String(m.propertyTax) : '',
+      formMortgageExtraPayment: entry.mortgage ? String(m.extraPayment) : '',
     });
   }
 
   closeModal = () => this.setState({ modalOpen: false });
 
+  isMortgageCategory(category) {
+    return MORTGAGE_CATEGORIES.includes(category);
+  }
+
+  openMortgageModal = () => this.setState({ mortgageModalOpen: true });
+  closeMortgageModal = () => this.setState({ mortgageModalOpen: false });
+
+  getMortgageDraft() {
+    const { formMortgageLoanAmount, formMortgageInterestRate, formMortgageTermYears, formMortgageHomeInsurance, formMortgageFloodInsurance, formMortgagePropertyTax, formMortgageExtraPayment } = this.state;
+    return {
+      loanAmount: parseFloat(formMortgageLoanAmount) || 0,
+      interestRate: parseFloat(formMortgageInterestRate) || 0,
+      termYears: parseFloat(formMortgageTermYears) || 0,
+      homeInsurance: parseFloat(formMortgageHomeInsurance) || 0,
+      floodInsurance: parseFloat(formMortgageFloodInsurance) || 0,
+      propertyTax: parseFloat(formMortgagePropertyTax) || 0,
+      extraPayment: parseFloat(formMortgageExtraPayment) || 0,
+    };
+  }
+
+  applyMortgage = () => {
+    const { total } = monthlyMortgageTotal(this.getMortgageDraft());
+    this.setState({ formAmount: total > 0 ? (Math.round(total * 100) / 100).toFixed(2) : '', mortgageModalOpen: false });
+  };
+
+  onCategoryChange = (e) => {
+    const value = e.target.value;
+    const patch = { formCategory: value };
+    if (this.isMortgageCategory(value)) patch.formFrequency = 'Monthly';
+    this.setState(patch, () => {
+      if (this.isMortgageCategory(value)) this.openMortgageModal();
+    });
+  };
+
   saveEntry = (e) => {
     e.preventDefault();
-    const { entries, modalType, editingId, formAmount, formDate, formCategory, formDescription, formFrequency, formOngoing, formEndDate, formBankAccount, formEarner, formAutoPay, formAutoPayDate } = this.state;
+    const { entries, modalType, editingId, formTitle, formAmount, formDate, formCategory, formDescription, formFrequency, formOngoing, formEndDate, formBankAccount, formEarner, formAutoPay, formAutoPayDate } = this.state;
+    const isMortgage = modalType === 'expense' && this.isMortgageCategory(formCategory);
     const amount = parseFloat(formAmount);
-    if (!amount || amount <= 0 || !formDate) return;
+    const title = formTitle.trim();
+    if (!title || !amount || amount <= 0 || !formDate || !formCategory) return;
     if (!formOngoing && !formEndDate) return;
     const autoPay = modalType === 'expense' ? formAutoPay : false;
     if (autoPay && !formAutoPayDate) return;
     const bankAccount = formBankAccount;
     const earner = formEarner;
-    const frequency = formFrequency;
+    const frequency = isMortgage ? 'Monthly' : formFrequency;
     const endDate = formOngoing ? null : formEndDate;
     const autoPayDate = autoPay ? formAutoPayDate : null;
+    const mortgage = isMortgage ? this.getMortgageDraft() : undefined;
     if (editingId) {
       const updated = entries.map(en => en.id === editingId
-        ? { ...en, amount, date: formDate, category: formCategory, description: formDescription, frequency, ongoing: formOngoing, endDate, bankAccount, earner, autoPay, autoPayDate }
+        ? { ...en, title, amount, date: formDate, category: formCategory, description: formDescription, frequency, ongoing: formOngoing, endDate, bankAccount, earner, autoPay, autoPayDate, mortgage }
         : en);
       this.persist(updated);
     } else {
       const newEntry = {
         id: 'e' + Date.now() + Math.random().toString(36).slice(2, 7),
-        type: modalType, amount, date: formDate, category: formCategory,
-        description: formDescription, frequency, ongoing: formOngoing, endDate, bankAccount, earner, autoPay, autoPayDate,
+        type: modalType, title, amount, date: formDate, category: formCategory,
+        description: formDescription, frequency, ongoing: formOngoing, endDate, bankAccount, earner, autoPay, autoPayDate, mortgage,
       };
       this.persist([...entries, newEntry]);
     }
@@ -185,8 +243,15 @@ export default class LedgerApp extends React.Component {
   onAutoPayDateChange = (e) => this.setForm('formAutoPayDate', e.target.value);
   onAmountChange = (e) => this.setForm('formAmount', e.target.value);
   onDateChange = (e) => this.setForm('formDate', e.target.value);
-  onCategoryChange = (e) => this.setForm('formCategory', e.target.value);
   onDescriptionChange = (e) => this.setForm('formDescription', e.target.value);
+  onTitleChange = (e) => this.setForm('formTitle', e.target.value);
+  onMortgageLoanAmountChange = (e) => this.setForm('formMortgageLoanAmount', e.target.value);
+  onMortgageInterestRateChange = (e) => this.setForm('formMortgageInterestRate', e.target.value);
+  onMortgageTermYearsChange = (e) => this.setForm('formMortgageTermYears', e.target.value);
+  onMortgageHomeInsuranceChange = (e) => this.setForm('formMortgageHomeInsurance', e.target.value);
+  onMortgageFloodInsuranceChange = (e) => this.setForm('formMortgageFloodInsurance', e.target.value);
+  onMortgagePropertyTaxChange = (e) => this.setForm('formMortgagePropertyTax', e.target.value);
+  onMortgageExtraPaymentChange = (e) => this.setForm('formMortgageExtraPayment', e.target.value);
   onNewBankNameChange = (e) => this.setState({ newBankName: e.target.value });
   onBankAccountChange = (e) => {
     const v = e.target.value;
@@ -199,6 +264,7 @@ export default class LedgerApp extends React.Component {
 
     const mapRow = (e, count, factor) => ({
       ...e,
+      displayTitle: e.title && e.title.trim() ? e.title : '—',
       displayDate: fmtDate(e.date),
       displayAmount: fmtMoney(e.amount * factor * count) + (factor < 1 ? ' (½ split)' : ''),
       displayDescription: e.description && e.description.trim() ? e.description : '—',
@@ -257,7 +323,7 @@ export default class LedgerApp extends React.Component {
     ], 70);
 
     const monthLabel = new Date(viewYear, viewMonth, 1).toLocaleString('en-US', { month: 'long', year: 'numeric' });
-    const categoryOptions = modalType === 'income' ? INCOME_CATEGORIES : EXPENSE_CATEGORIES;
+    const categoryOptions = [...(modalType === 'income' ? INCOME_CATEGORIES : EXPENSE_CATEGORIES)].sort((a, b) => a.localeCompare(b));
 
     return {
       incomeEntries, expenseEntries, incomeDonut, expenseDonut, overallDonut,
@@ -278,12 +344,17 @@ export default class LedgerApp extends React.Component {
 
   render() {
     const { entries, bankAccounts, bankModalOpen, newBankName, view, viewFilter, modalOpen, modalType, editingId,
-      formAmount, formDate, formCategory, formDescription, formFrequency, formOngoing, formEndDate, formBankAccount, formEarner,
-      formAutoPay, formAutoPayDate } = this.state;
+      formTitle, formAmount, formDate, formCategory, formDescription, formFrequency, formOngoing, formEndDate, formBankAccount, formEarner,
+      formAutoPay, formAutoPayDate, mortgageModalOpen,
+      formMortgageLoanAmount, formMortgageInterestRate, formMortgageTermYears,
+      formMortgageHomeInsurance, formMortgageFloodInsurance, formMortgagePropertyTax, formMortgageExtraPayment } = this.state;
     const vm = this.computeViewModel();
     const { onSignOut } = this.props;
 
     const bankTagList = bankAccounts.map(b => ({ name: b, onRemove: () => this.removeBank(b) }));
+    const isMortgageCategory = modalType === 'expense' && this.isMortgageCategory(formCategory);
+    const { principalInterest: mortgagePI, interestPortion: mortgageInterestPortion, principalPortion: mortgagePrincipalPortion, total: mortgageTotal } = monthlyMortgageTotal(this.getMortgageDraft());
+    const mortgageCanApply = parseFloat(formMortgageLoanAmount) > 0 && parseFloat(formMortgageInterestRate) >= 0 && parseFloat(formMortgageTermYears) > 0;
 
     return (
       <div className="ledger-shell" style={{ display: 'flex', flexDirection: 'row', minHeight: '100vh', background: 'var(--color-bg)', color: 'var(--color-text)', fontFamily: 'var(--font-body)' }}>
@@ -331,14 +402,12 @@ export default class LedgerApp extends React.Component {
             modalTitle={(editingId ? 'Edit ' : 'Add ') + (modalType === 'income' ? 'Income' : 'Expense')}
             onClose={this.closeModal}
             onSubmit={this.saveEntry}
+            formTitle={formTitle} onTitleChange={this.onTitleChange}
             formAmount={formAmount} onAmountChange={this.onAmountChange}
             formDate={formDate} onDateChange={this.onDateChange}
             formCategory={formCategory} onCategoryChange={this.onCategoryChange}
             isModalIncome={modalType === 'income'} isModalExpense={modalType === 'expense'}
             categoryOptions={vm.categoryOptions}
-            rentalCategoryOptions={RENTAL_CATEGORIES}
-            personalCategoryOptions={PERSONAL_CATEGORIES}
-            otherExpenseCategoryOptions={OTHER_EXPENSE_CATEGORIES}
             hasBanks={bankAccounts.length > 0} noBanks={bankAccounts.length === 0}
             bankAccounts={bankAccounts} formBankAccount={formBankAccount} onBankAccountChange={this.onBankAccountChange}
             onAddBank={this.openAddBank}
@@ -351,6 +420,21 @@ export default class LedgerApp extends React.Component {
             formFrequency={formFrequency} frequencyOptions={FREQUENCIES} onFrequencyChange={this.onFrequencyChange}
             formAutoPay={formAutoPay} onAutoPayChange={this.onAutoPayChange}
             formAutoPayDate={formAutoPayDate} onAutoPayDateChange={this.onAutoPayDateChange}
+            isMortgageCategory={isMortgageCategory} onOpenMortgageModal={this.openMortgageModal}
+          />
+        )}
+
+        {modalOpen && mortgageModalOpen && (
+          <MortgageModal
+            loanAmount={formMortgageLoanAmount} onLoanAmountChange={this.onMortgageLoanAmountChange}
+            interestRate={formMortgageInterestRate} onInterestRateChange={this.onMortgageInterestRateChange}
+            termYears={formMortgageTermYears} onTermYearsChange={this.onMortgageTermYearsChange}
+            homeInsurance={formMortgageHomeInsurance} onHomeInsuranceChange={this.onMortgageHomeInsuranceChange}
+            floodInsurance={formMortgageFloodInsurance} onFloodInsuranceChange={this.onMortgageFloodInsuranceChange}
+            propertyTax={formMortgagePropertyTax} onPropertyTaxChange={this.onMortgagePropertyTaxChange}
+            extraPayment={formMortgageExtraPayment} onExtraPaymentChange={this.onMortgageExtraPaymentChange}
+            principalInterest={mortgagePI} interestPortion={mortgageInterestPortion} principalPortion={mortgagePrincipalPortion} total={mortgageTotal} canApply={mortgageCanApply}
+            onCancel={this.closeMortgageModal} onApply={this.applyMortgage}
           />
         )}
 

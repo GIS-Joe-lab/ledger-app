@@ -14,13 +14,12 @@ export default function EntryTable({ entries, variant }) {
       <table className="table">
         <thead>
           <tr>
-            <th>Date</th>
+            <th>Title</th>
             <th>Category</th>
             <th>Account</th>
             <th>{variant === 'income' ? 'Earner' : 'Paid by'}</th>
             {variant === 'expense' ? <th>Auto pay</th> : null}
             <th>Description</th>
-            <th>Frequency</th>
             <th>Amount</th>
             <th></th>
           </tr>
@@ -28,13 +27,12 @@ export default function EntryTable({ entries, variant }) {
         <tbody>
           {entries.map((entry) => (
             <tr key={entry.id}>
-              <td>{entry.displayDate}</td>
+              <td style={{ fontWeight: 600 }}>{entry.displayTitle}</td>
               <td><span className="tag" style={{ background: entry.categoryBg, color: entry.categoryText }}>{entry.category}</span></td>
               <td style={dimCell}>{entry.displayBankAccount}</td>
               <td style={dimCell}>{entry.displayEarner}</td>
               {variant === 'expense' ? <td style={dimCell}>{entry.autoPay ? ('Yes · ' + entry.displayAutoPayDate) : 'No'}</td> : null}
               <td style={dimCell}>{entry.displayDescription}</td>
-              <td>{entry.frequencyLabel}</td>
               <td style={{ fontWeight: 600 }}>{entry.displayAmount}</td>
               <td>
                 <div style={{ display: 'flex', gap: 2, justifyContent: 'flex-end' }}>
