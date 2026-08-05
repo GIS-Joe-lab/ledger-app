@@ -79,7 +79,7 @@ export default class AuthGate extends React.Component {
     if (!user) {
       return (
         <div style={{ position: 'fixed', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--color-bg)' }}>
-          <form onSubmit={this.handleSubmit} className="dialog" style={{ width: 'min(340px, 90vw)' }}>
+          <form onSubmit={this.handleSubmit} className="dialog auth-card">
             <div className="dialog-title">Sign in to Ledger</div>
             <div className="text-muted" style={{ fontSize: 13, marginTop: -8 }}>Syncs your entries across your devices.</div>
             <div className="field">
