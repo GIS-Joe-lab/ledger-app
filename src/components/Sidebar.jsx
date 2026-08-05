@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { GridIcon, IncomeIcon, ExpenseIcon, PlusIcon, ChevronLeftIcon, ChevronRightIcon } from './icons.jsx';
 
 const navBg = (active) => active ? 'color-mix(in srgb, var(--color-accent) 14%, transparent)' : 'transparent';
@@ -23,12 +23,10 @@ function NavButton({ active, onClick, icon, children, collapsed }) {
   );
 }
 
-export default function Sidebar({ view, onSetView, onAddBank, onSignOut }) {
-  const [collapsed, setCollapsed] = useState(false);
-
+export default function Sidebar({ view, onSetView, onAddBank, onSignOut, collapsed, onToggleCollapsed, mobileOpen }) {
   return (
     <aside
-      className="ledger-sidebar"
+      className={'ledger-sidebar' + (collapsed ? ' is-collapsed' : '') + (mobileOpen ? ' is-mobile-open' : '')}
       style={{
         width: collapsed ? 72 : 264, flex: 'none',
         padding: collapsed ? 'var(--space-6) var(--space-2)' : 'var(--space-6) var(--space-4)',
@@ -45,8 +43,9 @@ export default function Sidebar({ view, onSetView, onAddBank, onSignOut }) {
           </div>
         )}
         <button
+          className="ledger-sidebar-toggle"
           aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-          onClick={() => setCollapsed((c) => !c)}
+          onClick={onToggleCollapsed}
           style={{
             display: 'flex', alignItems: 'center', justifyContent: 'center', width: 28, height: 28, flex: 'none',
             border: '1px solid var(--color-divider)', borderRadius: 'var(--radius-md)',
@@ -78,7 +77,7 @@ export default function Sidebar({ view, onSetView, onAddBank, onSignOut }) {
         </button>
       </nav>
 
-      <div style={{ marginTop: 'auto' }}>
+      <div className="ledger-sidebar-footer" style={{ marginTop: 'auto' }}>
         <button
           className="btn btn-secondary"
           style={{ fontSize: 13, width: '100%' }}

@@ -39,17 +39,17 @@ export function PlusIcon({ size = 18, strokeWidth = 2 }) {
   );
 }
 
-export function ChevronLeftIcon({ size = 16 }) {
+export function ChevronLeftIcon({ size = 16, style }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 24 24" {...base} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg width={size} height={size} viewBox="0 0 24 24" {...base} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={style}>
       <path d="M15 6l-6 6 6 6"></path>
     </svg>
   );
 }
 
-export function ChevronRightIcon({ size = 16 }) {
+export function ChevronRightIcon({ size = 16, style }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 24 24" {...base} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg width={size} height={size} viewBox="0 0 24 24" {...base} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={style}>
       <path d="M9 6l6 6-6 6"></path>
     </svg>
   );
@@ -75,6 +75,14 @@ export function CloseIcon({ size = 11 }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" {...base} strokeWidth="2.4" strokeLinecap="round">
       <path d="M6 6l12 12M18 6L6 18"></path>
+    </svg>
+  );
+}
+
+export function MenuIcon({ size = 16 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" {...base} strokeWidth="2" strokeLinecap="round">
+      <path d="M4 6h16M4 12h16M4 18h16"></path>
     </svg>
   );
 }

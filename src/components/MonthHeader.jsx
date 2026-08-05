@@ -1,10 +1,24 @@
 import React from 'react';
-import { ChevronLeftIcon, ChevronRightIcon } from './icons.jsx';
+import { ChevronLeftIcon, ChevronRightIcon, MenuIcon, CloseIcon } from './icons.jsx';
 
-export default function MonthHeader({ pageTitle, monthLabel, onPrevMonth, onNextMonth, viewFilter, onFilterChange }) {
+export default function MonthHeader({ pageTitle, monthLabel, onPrevMonth, onNextMonth, viewFilter, onFilterChange, mobileNavOpen, onToggleMobileNav }) {
   return (
     <div className="ledger-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 'var(--space-3)' }}>
-      <h2 className="ledger-page-title" style={{ margin: 0 }}>{pageTitle}</h2>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+        <button
+          className="ledger-mobile-nav-toggle"
+          aria-label={mobileNavOpen ? 'Close navigation' : 'Open navigation'}
+          onClick={onToggleMobileNav}
+          style={{
+            alignItems: 'center', justifyContent: 'center', width: 30, height: 30, flex: 'none',
+            border: '1px solid var(--color-divider)', borderRadius: 'var(--radius-md)',
+            background: 'transparent', color: 'var(--color-text)', cursor: 'pointer',
+          }}
+        >
+          {mobileNavOpen ? <CloseIcon size={14} /> : <MenuIcon size={16} />}
+        </button>
+        <h2 className="ledger-page-title" style={{ margin: 0 }}>{pageTitle}</h2>
+      </div>
       <div className="ledger-header-controls" style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-4)', flexWrap: 'wrap' }}>
         <div className="ledger-month-nav" style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}>
           <button

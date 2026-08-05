@@ -23,6 +23,8 @@ export default class LedgerApp extends React.Component {
       bankModalOpen: false,
       newBankName: '',
       view: 'overview',
+      sidebarCollapsed: false,
+      mobileNavOpen: false,
       viewFilter: 'Both',
       viewYear: now.getFullYear(),
       viewMonth: now.getMonth(),
@@ -103,7 +105,10 @@ export default class LedgerApp extends React.Component {
     this.setState({ entries });
   }
 
-  setView = (v) => this.setState({ view: v });
+  setView = (v) => this.setState({ view: v, mobileNavOpen: false });
+  toggleSidebar = () => this.setState((s) => ({ sidebarCollapsed: !s.sidebarCollapsed }));
+  toggleMobileNav = () => this.setState((s) => ({ mobileNavOpen: !s.mobileNavOpen }));
+  closeMobileNav = () => this.setState({ mobileNavOpen: false });
 
   changeMonth = (delta) => {
     this.setState(s => {
@@ -343,7 +348,7 @@ export default class LedgerApp extends React.Component {
   }
 
   render() {
-    const { entries, bankAccounts, bankModalOpen, newBankName, view, viewFilter, modalOpen, modalType, editingId,
+    const { entries, bankAccounts, bankModalOpen, newBankName, view, sidebarCollapsed, mobileNavOpen, viewFilter, modalOpen, modalType, editingId,
       formTitle, formAmount, formDate, formCategory, formDescription, formFrequency, formOngoing, formEndDate, formBankAccount, formEarner,
       formAutoPay, formAutoPayDate, mortgageModalOpen,
       formMortgageLoanAmount, formMortgageInterestRate, formMortgageTermYears,
@@ -358,7 +363,9 @@ export default class LedgerApp extends React.Component {
 
     return (
       <div className="ledger-shell" style={{ display: 'flex', flexDirection: 'row', minHeight: '100vh', background: 'var(--color-bg)', color: 'var(--color-text)', fontFamily: 'var(--font-body)' }}>
-        <Sidebar view={view} onSetView={this.setView} onAddBank={this.openAddBank} onSignOut={onSignOut} />
+        <Sidebar view={view} onSetView={this.setView} onAddBank={this.openAddBank} onSignOut={onSignOut} collapsed={sidebarCollapsed} onToggleCollapsed={this.toggleSidebar} mobileOpen={mobileNavOpen} />
+
+        {mobileNavOpen && <div className="ledger-mobile-backdrop" onClick={this.closeMobileNav} />}
 
         <main className="ledger-main" style={{ flex: 1, padding: 'var(--space-8) var(--space-8)', display: 'flex', flexDirection: 'column', gap: 'var(--space-6)', minWidth: 0 }}>
           <MonthHeader
@@ -368,6 +375,8 @@ export default class LedgerApp extends React.Component {
             onNextMonth={() => this.changeMonth(1)}
             viewFilter={viewFilter}
             onFilterChange={this.onFilterChange}
+            mobileNavOpen={mobileNavOpen}
+            onToggleMobileNav={this.toggleMobileNav}
           />
 
           {view === 'overview' && (
