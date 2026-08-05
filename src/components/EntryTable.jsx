@@ -19,7 +19,6 @@ export default function EntryTable({ entries, variant }) {
             <th>Account</th>
             <th>{variant === 'income' ? 'Earner' : 'Paid by'}</th>
             {variant === 'expense' ? <th>Auto pay</th> : null}
-            <th>Description</th>
             <th>Amount</th>
             <th></th>
           </tr>
@@ -32,7 +31,6 @@ export default function EntryTable({ entries, variant }) {
               <td style={dimCell}>{entry.displayBankAccount}</td>
               <td style={dimCell}>{entry.displayEarner}</td>
               {variant === 'expense' ? <td style={dimCell}>{entry.autoPay ? ('Yes · ' + entry.displayAutoPayDate) : 'No'}</td> : null}
-              <td style={dimCell}>{entry.displayDescription}</td>
               <td style={{ fontWeight: 600 }}>{entry.displayAmount}</td>
               <td>
                 <div style={{ display: 'flex', gap: 2, justifyContent: 'flex-end' }}>
