@@ -208,7 +208,7 @@ export default class LedgerApp extends React.Component {
     const frequency = isMortgage ? 'Monthly' : formFrequency;
     const endDate = formOngoing ? null : formEndDate;
     const autoPayDate = autoPay ? formAutoPayDate : null;
-    const mortgage = isMortgage ? this.getMortgageDraft() : undefined;
+    const mortgage = isMortgage ? this.getMortgageDraft() : null;
     if (editingId) {
       const updated = entries.map(en => en.id === editingId
         ? { ...en, title, amount, date: formDate, category: formCategory, description: formDescription, frequency, ongoing: formOngoing, endDate, bankAccount, earner, autoPay, autoPayDate, mortgage }
