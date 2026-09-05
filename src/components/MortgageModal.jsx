@@ -35,7 +35,10 @@ export default function MortgageModal({
           <input className="input" type="number" min="0" step="1" value={termYears} onChange={onTermYearsChange} placeholder="30" />
         </div>
 
-        <div style={{ fontSize: 12.5, color: 'var(--color-ink-soft)', marginTop: 4, borderBottom: '1px solid var(--color-divider)', paddingBottom: 6 }}>Escrow &amp; fees (monthly)</div>
+        <div style={{ marginTop: 8, paddingTop: 14, borderTop: '1px solid var(--color-divider)' }}>
+          <div style={{ fontFamily: 'var(--font-heading)', fontWeight: 'var(--font-heading-weight)', fontSize: 16, color: 'var(--color-text)' }}>Escrow &amp; fees</div>
+          <div style={{ fontSize: 12.5, color: 'var(--color-ink-soft)', marginTop: 2 }}>Monthly add-ons to the payment.</div>
+        </div>
 
         <div className="field">
           <label>Home insurance</label>
