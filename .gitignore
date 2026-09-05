@@ -8,3 +8,8 @@ firebase-debug.log
 .idea/
 .claude/
 .agents/
+
+# Impeccable working artifacts (keep design.json + surfaces/, drop the rest)
+.impeccable/review/
+.impeccable/hook.cache.json
+.impeccable/questions/

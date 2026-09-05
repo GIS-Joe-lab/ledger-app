@@ -1,26 +1,36 @@
 import React from 'react';
-import DonutChart from './DonutChart.jsx';
+import SpendBar from './SpendBar.jsx';
 import EntryTable from './EntryTable.jsx';
 import { PlusIcon } from './icons.jsx';
 
-export default function IncomeView({ totalIncomeDisplay, incomeDonut, incomeEntries, incomeEmpty, incomeHasRows, onAddIncome }) {
+export default function IncomeView({ totalIncomeDisplay, incomeBreakdown, incomeEntries, incomeEmpty, incomeHasRows, onAddIncome, newId }) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
-      <div style={{ fontSize: 13, color: 'color-mix(in srgb, var(--color-text) 60%, transparent)' }}>
-        Total income this month: <span style={{ color: 'var(--color-accent-300)', fontWeight: 600 }}>{totalIncomeDisplay}</span>
-      </div>
-      {incomeHasRows && (
-        <div style={{ display: 'flex', gap: 'var(--space-6)', flexWrap: 'wrap', alignItems: 'center', padding: 'var(--space-4)', borderRadius: 'var(--radius-lg)', background: 'var(--color-surface)' }}>
-          <DonutChart segments={incomeDonut} size={140} />
+    <div className="view">
+      <div className="view-total">Income recorded this month — <b>{totalIncomeDisplay}</b></div>
+
+      {incomeHasRows && incomeBreakdown.length > 1 && (
+        <div className="view-breakdown">
+          <SpendBar items={incomeBreakdown} />
+          <ul className="ov-cats">
+            {incomeBreakdown.map((c) => (
+              <li key={c.label}>
+                <div className="ov-cat ov-cat--static">
+                  <i style={{ background: c.color }} />
+                  <span>{c.label}</span>
+                  <span className="ov-cat-val">{c.displayValue}</span>
+                  <span className="ov-cat-pct">{c.pct}%</span>
+                </div>
+              </li>
+            ))}
+          </ul>
         </div>
       )}
-      {incomeEmpty && (
-        <div style={{ padding: 'var(--space-8)', textAlign: 'center', color: 'color-mix(in srgb, var(--color-text) 55%, transparent)', border: '1px dashed var(--color-divider)', borderRadius: 'var(--radius-md)' }}>
-          No income entries this month yet.
-        </div>
-      )}
-      {incomeHasRows && <EntryTable entries={incomeEntries} variant="income" />}
-      <button className="btn btn-primary btn-block" style={{ marginTop: 0 }} onClick={onAddIncome}>
+
+      {incomeEmpty && <div className="view-empty">No income recorded for this month yet.</div>}
+
+      {incomeHasRows && <EntryTable entries={incomeEntries} variant="income" newId={newId} />}
+
+      <button className="btn btn-primary view-add" onClick={onAddIncome}>
         <PlusIcon size={14} strokeWidth={2.4} />
         Add income
       </button>

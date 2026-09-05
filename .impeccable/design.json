@@ -1,0 +1,174 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-05T00:00:00Z",
+  "title": "Design System: Ledger",
+  "extensions": {
+    "colorMeta": {
+      "paper-bg": { "role": "neutral", "displayName": "Recycled-Paper Ground", "canonical": "#f4f1e8", "tonalRamp": ["#2b271d", "#443f30", "#5f5943", "#7b7357", "#988f6f", "#b7ae8d", "#d6cdad", "#f4f1e8"] },
+      "surface-inset": { "role": "neutral", "displayName": "Surface Inset", "canonical": "#efeae0", "tonalRamp": ["#2a261d", "#423e30", "#5c5643", "#787057", "#948b6e", "#b3a98a", "#d1c8a9", "#efeae0"] },
+      "indigo-ink": { "role": "primary", "displayName": "Indigo Ink", "canonical": "#2e3a54", "tonalRamp": ["#12161f", "#1c222f", "#262f43", "#2e3a54", "#425376", "#66799e", "#98a6c1", "#cdd5e3"] },
+      "graphite-ink": { "role": "neutral", "displayName": "Graphite Ink", "canonical": "#5c574a", "tonalRamp": ["#201e19", "#332f27", "#464137", "#5c574a", "#797260", "#98917c", "#bcb6a3", "#ddd9cc"] },
+      "faint-ink": { "role": "neutral", "displayName": "Faint Ink", "canonical": "#635d4c", "tonalRamp": ["#221f19", "#353125", "#4a4535", "#635d4c", "#807861", "#9d947a", "#c0b8a1", "#e0dccc"] },
+      "vermilion": { "role": "secondary", "displayName": "Vermilion", "canonical": "#9e4630", "tonalRamp": ["#2c130d", "#471f15", "#63291d", "#843826", "#9e4630", "#bd6a54", "#d79a8a", "#efcdc4"] },
+      "vermilion-hover": { "role": "secondary", "displayName": "Vermilion Hover", "canonical": "#883a26", "tonalRamp": ["#26110b", "#3d1a11", "#552418", "#6e2f1f", "#883a26", "#a95d47", "#cb9382", "#e9c9bf"] },
+      "vermilion-soft": { "role": "secondary", "displayName": "Vermilion Soft", "canonical": "#b26a52", "tonalRamp": ["#33190f", "#4f271a", "#6b3626", "#8a4a37", "#b26a52", "#c68d79", "#dcb5a7", "#f0ddd4"] },
+      "danger": { "role": "secondary", "displayName": "Danger Oxide", "canonical": "#99271b", "tonalRamp": ["#2a0b07", "#450f0a", "#61150d", "#7d1f14", "#99271b", "#bd5344", "#d98d81", "#f0c8c1"] },
+      "divider": { "role": "neutral", "displayName": "Baseline Hairline", "canonical": "#dcd6c4", "tonalRamp": ["#2e2b21", "#474334", "#615c48", "#7d775f", "#9b9479", "#bab399", "#d0c9b3", "#dcd6c4"] },
+      "divider-strong": { "role": "neutral", "displayName": "Strong Divider", "canonical": "#c4bca6", "tonalRamp": ["#2a2820", "#413d30", "#5a5443", "#766f58", "#948c72", "#b0a88e", "#c4bca6", "#e3ddce"] },
+      "cat-walnut": { "role": "tertiary", "displayName": "Walnut (Mortgage)", "canonical": "#6f4a37", "tonalRamp": ["#231710", "#392419", "#4f3324", "#6f4a37", "#8c6350", "#a9836f", "#c7ab9b", "#e5d5cb"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "h1 only — top-level page identity, rare." },
+      "headline": { "displayName": "Headline", "purpose": "h2 and the mobile page title." },
+      "title": { "displayName": "Title", "purpose": "h3 / Overview section headings (ship at 18px)." },
+      "subtitle": { "displayName": "Subtitle", "purpose": "h4; dialog titles run 22px." },
+      "figure": { "displayName": "Net Figure", "purpose": "The single reserved emphasis on Overview — 'What's left', Spectral, on a 4px double rule." },
+      "body": { "displayName": "Body", "purpose": "Default UI text in Hanken Grotesk; reading sentence caps ~52ch." },
+      "label": { "displayName": "Label", "purpose": "h6 / small overline labels, graphite, 0.04em." },
+      "money": { "displayName": "Money", "purpose": "Every currency value and any column-stacked figure; tabular-nums lining-nums." }
+    },
+    "shadows": [
+      { "name": "none", "value": "none", "purpose": "The system has no z-axis. --shadow-sm/md/lg are all 'none' and .elev-* is forced flat. Every boundary is a 1px rule or a one-step tonal shift (#f4f1e8 -> #efeae0)." }
+    ],
+    "motion": [
+      { "name": "state-transition", "value": "0.12s ease", "purpose": "The only ambient transition — background/border/color on buttons, inputs, nav, rows." },
+      { "name": "rule-in", "value": "0.55s ease-out; @keyframes rule-in { 0% { background-size: 0 2px } 60% { background-size: 100% 2px } 100% { background-size: 100% 0 } }", "purpose": "A newly added register row draws a vermilion hairline left-to-right along its bottom edge, then retracts. Runs once via .reg-row.is-new." },
+      { "name": "settle-in", "value": "0.5s cubic-bezier(0.16, 1, 0.3, 1); @keyframes settle-in { from { opacity: 0; transform: translateY(3px) } to { opacity: 1; transform: translateY(0) } }", "purpose": "Paired with rule-in: the new row's title and amount fade up onto the baseline. Totals never animate — no count-up." },
+      { "name": "drawer", "value": "transform 0.2s ease", "purpose": "Mobile sidebar slide-in (translateX(-100%) -> 0) below 860px." },
+      { "name": "reduced-motion", "value": "@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important } }", "purpose": "All animation and transition durations collapse to ~0." }
+    ],
+    "breakpoints": [
+      { "name": "meta-dots", "value": "560px" },
+      { "name": "list-inline-add", "value": "720px" },
+      { "name": "mobile", "value": "860px" },
+      { "name": "narrow-desktop", "value": "1180px" },
+      { "name": "overview-spread", "value": "1000px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "A stamped ink block — solid indigo fill, paper text. Used for Add income / Add expense.",
+      "html": "<button class=\"ds-btn-primary\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"><path d=\"M12 5v14M5 12h14\"/></svg>Add expense</button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 40px; padding: 8px 16px; font-family: 'Hanken Grotesk', system-ui, sans-serif; font-weight: 500; font-size: 14.5px; line-height: 1.2; color: #f4f1e8; background: #2e3a54; border: 1px solid #2e3a54; border-radius: 3px; cursor: pointer; transition: background-color 0.12s ease, border-color 0.12s ease; } .ds-btn-primary:hover { background: #26314a; border-color: #26314a; } .ds-btn-primary:active { background: #1f293f; } .ds-btn-primary:focus-visible { outline: 2px solid #9e4630; outline-offset: 2px; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Outlined, transparent fill, indigo text. Sign out, dialog cancel.",
+      "html": "<button class=\"ds-btn-secondary\">Sign out</button>",
+      "css": ".ds-btn-secondary { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 40px; padding: 8px 16px; font-family: 'Hanken Grotesk', system-ui, sans-serif; font-weight: 500; font-size: 14.5px; line-height: 1.2; color: #2e3a54; background: transparent; border: 1px solid #c4bca6; border-radius: 3px; cursor: pointer; transition: background-color 0.12s ease, border-color 0.12s ease; } .ds-btn-secondary:hover { background: color-mix(in srgb, #2e3a54 6%, transparent); } .ds-btn-secondary:active { background: color-mix(in srgb, #2e3a54 11%, transparent); } .ds-btn-secondary:focus-visible { outline: 2px solid #9e4630; outline-offset: 2px; }"
+    },
+    {
+      "name": "Text Input",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Field with a barely-there warm fill, strong hairline border, vermilion caret and focus border.",
+      "html": "<label class=\"ds-field\"><span>Amount</span><input class=\"ds-input\" type=\"text\" placeholder=\"0.00\" /></label>",
+      "css": ".ds-field { display: block; min-width: 0; } .ds-field > span { display: block; font-family: 'Hanken Grotesk', system-ui, sans-serif; font-size: 13px; margin-bottom: 6px; color: #5c574a; } .ds-input { width: 100%; min-height: 40px; padding: 9px 12px; font-family: 'Hanken Grotesk', system-ui, sans-serif; font-size: 15px; color: #2e3a54; caret-color: #9e4630; background: color-mix(in srgb, #ffffff 34%, #f4f1e8); border: 1px solid #c4bca6; border-radius: 3px; transition: border-color 0.12s ease; } .ds-input::placeholder { color: #635d4c; opacity: 1; } .ds-input:hover { border-color: #5c574a; } .ds-input:focus-visible { border-color: #9e4630; outline: none; }"
+    },
+    {
+      "name": "Select",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Native select with appearance stripped and an inline-SVG chevron matching the stroke icon set.",
+      "html": "<label class=\"ds-field\"><span>Category</span><select class=\"ds-select\"><option>Groceries</option><option>Mortgage</option></select></label>",
+      "css": ".ds-field { display: block; } .ds-field > span { display: block; font-family: 'Hanken Grotesk', system-ui, sans-serif; font-size: 13px; margin-bottom: 6px; color: #5c574a; } .ds-select { width: 100%; min-height: 40px; padding: 9px 36px 9px 12px; font-family: 'Hanken Grotesk', system-ui, sans-serif; font-size: 15px; color: #2e3a54; background-color: color-mix(in srgb, #ffffff 34%, #f4f1e8); border: 1px solid #c4bca6; border-radius: 3px; appearance: none; -webkit-appearance: none; background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%235c574a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E\"); background-position: right 12px center; background-size: 14px 14px; background-repeat: no-repeat; transition: border-color 0.12s ease; } .ds-select:hover { border-color: #5c574a; } .ds-select:focus-visible { border-color: #9e4630; outline: none; }"
+    },
+    {
+      "name": "Segmented Control",
+      "kind": "chip",
+      "refersTo": "segmented-control",
+      "description": "The earner filter (Me / Wife / Both). One hairline enclosure, internal dividers, no gaps.",
+      "html": "<div class=\"ds-seg\" role=\"group\"><label class=\"ds-seg-opt\"><input type=\"radio\" name=\"earner\" />Me</label><label class=\"ds-seg-opt\"><input type=\"radio\" name=\"earner\" />Wife</label><label class=\"ds-seg-opt ds-seg-opt--on\"><input type=\"radio\" name=\"earner\" checked />Both</label></div>",
+      "css": ".ds-seg { display: inline-flex; overflow: hidden; border: 1px solid #c4bca6; border-radius: 3px; font-family: 'Hanken Grotesk', system-ui, sans-serif; } .ds-seg-opt { display: inline-flex; align-items: center; gap: 6px; padding: 9px 14px; font-size: 14px; color: #5c574a; cursor: pointer; transition: background-color 0.12s ease, color 0.12s ease; } .ds-seg-opt + .ds-seg-opt { border-left: 1px solid #c4bca6; } .ds-seg-opt input { position: absolute; opacity: 0; width: 0; height: 0; } .ds-seg-opt:hover { background: color-mix(in srgb, #2e3a54 5%, transparent); } .ds-seg-opt--on { color: #2e3a54; background: color-mix(in srgb, #2e3a54 9%, transparent); font-weight: 500; }"
+    },
+    {
+      "name": "Sidebar Nav Item",
+      "kind": "nav",
+      "refersTo": null,
+      "description": "Vertical nav row; active state is an indigo wash plus weight, never a bar or shadow.",
+      "html": "<nav class=\"ds-nav\"><button class=\"ds-nav-item ds-nav-item--on\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\"><rect x=\"3\" y=\"3\" width=\"8\" height=\"8\" rx=\"1.5\"/><rect x=\"13\" y=\"3\" width=\"8\" height=\"8\" rx=\"1.5\"/><rect x=\"3\" y=\"13\" width=\"8\" height=\"8\" rx=\"1.5\"/><rect x=\"13\" y=\"13\" width=\"8\" height=\"8\" rx=\"1.5\"/></svg>Overview</button><button class=\"ds-nav-item\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M12 16V8M8 12l4-4 4 4\"/></svg>Income</button></nav>",
+      "css": ".ds-nav { display: flex; flex-direction: column; gap: 2px; font-family: 'Hanken Grotesk', system-ui, sans-serif; } .ds-nav-item { display: flex; align-items: center; gap: 12px; width: 100%; padding: 10px 12px; border: none; border-radius: 3px; background: transparent; color: #5c574a; font: inherit; font-size: 15px; font-weight: 400; text-align: left; cursor: pointer; } .ds-nav-item:hover { background: color-mix(in srgb, #2e3a54 5%, transparent); } .ds-nav-item--on { color: #2e3a54; font-weight: 600; background: color-mix(in srgb, #2e3a54 9%, transparent); } .ds-nav-item:focus-visible { outline: 2px solid #9e4630; outline-offset: 2px; }"
+    },
+    {
+      "name": "Net Figure",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "The one reserved emphasis on Overview — 'What's left', Spectral, hung from a 4px double rule.",
+      "html": "<div class=\"ds-net\"><span class=\"ds-net-label\">What’s left in September 2026</span><span class=\"ds-net-fig\">$6,700.80</span></div>",
+      "css": ".ds-net { display: flex; flex-direction: column; gap: 4px; padding-top: 12px; } .ds-net-label { font-family: 'Hanken Grotesk', system-ui, sans-serif; font-size: 13.5px; color: #5c574a; } .ds-net-fig { align-self: flex-start; font-family: 'Spectral', Georgia, serif; font-weight: 500; font-size: clamp(44px, 11vw, 68px); line-height: 1.04; letter-spacing: -0.02em; color: #2e3a54; font-variant-numeric: tabular-nums lining-nums; border-bottom: 4px double currentColor; padding-bottom: 8px; }"
+    },
+    {
+      "name": "Proportion Ruler",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "SpendBar — a 10px flex strip, one segment per category sized by share of total. Replaced the ring chart.",
+      "html": "<div class=\"ds-bar\" role=\"img\" aria-label=\"Share of the total by category\"><span class=\"ds-bar-seg\" style=\"flex-grow:0.6;background:#6f4a37\"></span><span class=\"ds-bar-seg\" style=\"flex-grow:0.23;background:#6b6a3c\"></span><span class=\"ds-bar-seg\" style=\"flex-grow:0.1;background:#3d6066\"></span><span class=\"ds-bar-seg\" style=\"flex-grow:0.07;background:#556884\"></span></div>",
+      "css": ".ds-bar { display: flex; gap: 1px; height: 10px; background: #c4bca6; border-radius: 2px; overflow: hidden; } .ds-bar-seg { min-width: 2px; }"
+    },
+    {
+      "name": "Register Row",
+      "kind": "custom",
+      "refersTo": "register-row",
+      "description": "One entry as a ruled line — title + amount on line 1, dot/pipe-separated plain-text meta on line 2. Whole row opens the entry.",
+      "html": "<div class=\"ds-reg\"><div class=\"ds-reg-row\" tabindex=\"0\"><span class=\"ds-reg-title\">Electric &amp; gas</span><span class=\"ds-reg-amount\">$180.00</span><span class=\"ds-reg-meta\"><span class=\"ds-reg-cat\"><i style=\"background:#3d6066\"></i>Utilities</span><span class=\"ds-reg-sep\"></span>Chase Checking<span class=\"ds-reg-sep\"></span>Paid by Both<span class=\"ds-reg-sep\"></span>Monthly<span class=\"ds-reg-sep\"></span>Sep 15</span></div></div>",
+      "css": ".ds-reg { display: flex; flex-direction: column; font-family: 'Hanken Grotesk', system-ui, sans-serif; } .ds-reg-row { display: flex; flex-wrap: wrap; align-items: baseline; gap: 3px 16px; padding: 12px 4px 11px; border-bottom: 1px solid #dcd6c4; background-image: linear-gradient(#9e4630, #9e4630); background-repeat: no-repeat; background-position: 0 100%; background-size: 100% 0; cursor: pointer; transition: background-color 0.12s ease; } .ds-reg-row:hover { background-color: color-mix(in srgb, #2e3a54 4%, transparent); } .ds-reg-row:focus-visible { outline: 2px solid #9e4630; outline-offset: -2px; } .ds-reg-title { flex: 1 1 auto; min-width: 0; font-weight: 500; color: #2e3a54; } .ds-reg-amount { flex: 0 0 auto; font-weight: 600; color: #2e3a54; white-space: nowrap; font-variant-numeric: tabular-nums; } .ds-reg-meta { flex-basis: 100%; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; font-size: 12.5px; color: #5c574a; } .ds-reg-cat { display: inline-flex; align-items: center; gap: 6px; color: #2e3a54; } .ds-reg-cat i { width: 9px; height: 9px; border-radius: 2px; flex: none; } .ds-reg-sep { width: 1px; height: 10px; background: #c4bca6; }"
+    },
+    {
+      "name": "Dialog",
+      "kind": "card",
+      "refersTo": "dialog",
+      "description": "Modal on paper with a hard 1px indigo border and no shadow, over a dark wash.",
+      "html": "<div class=\"ds-dialog-backdrop\"><div class=\"ds-dialog\"><h2 class=\"ds-dialog-title\">Edit entry</h2><p class=\"ds-dialog-body\">Adjust the amount, category, or date.</p><div class=\"ds-dialog-actions\"><button class=\"ds-btn-secondary\">Cancel</button><button class=\"ds-btn-primary\">Save</button></div></div></div>",
+      "css": ".ds-dialog-backdrop { position: fixed; inset: 0; display: grid; place-items: center; padding: 16px; background: color-mix(in srgb, #2a2620 46%, transparent); } .ds-dialog { width: min(440px, 100%); display: flex; flex-direction: column; gap: 12px; padding: 24px; border-radius: 4px; background: #f4f1e8; border: 1px solid #2e3a54; } .ds-dialog-title { margin: 0; font-family: 'Spectral', Georgia, serif; font-weight: 500; font-size: 22px; color: #2e3a54; } .ds-dialog-body { margin: 0; font-family: 'Hanken Grotesk', system-ui, sans-serif; font-size: 15px; color: #5c574a; } .ds-dialog-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 8px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Kakeibo Ledger Page",
+    "overview": "Ledger is a Japanese household account book (kakeibo) set in Western letterpress. Every screen is one page of that book: a warm recycled-paper ground, two inks - indigo for structure and text, vermilion reserved for money leaving - and every line of type sitting on a visible hairline rule. There are no cards floating on white, no elevation, no gradients, no decorative chart. Depth is not simulated; boundaries are drawn as 1px rules the way a ruled ledger draws them. The page is quiet on purpose: the one loud thing is the net figure, set large in Spectral and hung from a double rule.\n\nDensity is generous and typographic. Content columns are narrow (Overview caps near 780px single-column, 1160px for the two-column spread; list views cap at 720px). Whitespace between sections is wide (the 34px top step), whitespace within a ledger block is tight (7-12px between ruled lines). Money is always tabular so columns of figures align to the digit. The serif (Spectral) carries headings, section titles, the ledger tallies and the net figure; the grotesque (Hanken Grotesk) carries every piece of UI chrome.\n\nThe system explicitly refuses the fintech dashboard: no elevated cards on white, no hero donut or ring chart (a flat proportion ruler replaced it everywhere), no saturated candy category chips. Category identity is carried only by a 9-10px muted-ink swatch, never a fill behind text. Motion is almost absent: exactly one authored moment (a new register line ruling its hairline in), and totals deliberately never count up.",
+    "keyCharacteristics": [
+      "Warm recycled-paper ground (#f4f1e8) on every surface; no white anywhere",
+      "Two inks: indigo #2e3a54 for everything structural, vermilion #9e4630 for outflow only (~15% of any page)",
+      "Hairline 1px rules carry every boundary; zero shadows, zero elevation",
+      "Radius never exceeds 4px",
+      "Spectral serif for headings, tallies and the net figure; Hanken Grotesk for UI",
+      "All money set tabular-nums lining-nums",
+      "One reserved emphasis per Overview: the net figure on a 4px double rule",
+      "One authored motion moment (register rule-in); tallies never tick"
+    ],
+    "rules": [
+      { "name": "The Reserved-Ink Rule", "body": "Vermilion (#9e4630) means one thing: money leaving, a negative, or a key mark. It never fills a shape behind text and never identifies a category. If more than ~15% of a screen is vermilion, something non-outflow has borrowed the ink - take it back.", "section": "colors" },
+      { "name": "The No-White Rule", "body": "Paper (#f4f1e8) is the lightest value in the system. Never introduce #fff or a cooler off-white as a surface; inset panels go one step darker to #efeae0.", "section": "colors" },
+      { "name": "The Swatch-Not-Fill Rule", "body": "Category colour appears only as a <=10px mark. A category never gets a coloured background, pill, or text colour.", "section": "colors" },
+      { "name": "The Two-Voice Rule", "body": "Spectral is the ledger's voice (records, tallies, the net figure). Hanken Grotesk is the operator's voice (controls, labels, meta). A string belongs to exactly one voice; don't set a button or a meta line in the serif.", "section": "typography" },
+      { "name": "The Tabular-Money Rule", "body": "Every amount carries tabular-nums lining-nums. Figures that share a column must align on the decimal.", "section": "typography" },
+      { "name": "The Drawn-Boundary Rule", "body": "Every edge in the system is a 1px rule or a 1px border. If a surface needs to feel separate, give it a hairline or step it one tone darker - never a shadow, never a blur.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do put every surface on paper #f4f1e8; step to #efeae0 only for a genuine inset panel.",
+      "Do carry all boundaries with 1px rules - --color-divider for baselines, --color-divider-strong for interactive strokes.",
+      "Do set headings, section titles, tallies and the net figure in Spectral; set every control, label and meta line in Hanken Grotesk.",
+      "Do give every amount font-variant-numeric: tabular-nums lining-nums (.tnum / .fig).",
+      "Do keep vermilion to money-out / negatives / key marks and roughly 15% of any screen (The Reserved-Ink Rule).",
+      "Do show category identity as a <=10px swatch or a ruler segment only.",
+      "Do keep radius at 2-4px; use square corners for ruled lines.",
+      "Do honour prefers-reduced-motion - all animation/transition durations collapse to ~0.",
+      "Do keep the register rule-in as the only authored motion; let totals just update."
+    ],
+    "donts": [
+      "Don't introduce #fff or a cool off-white anywhere (The No-White Rule).",
+      "Don't add box-shadows, elevated cards, or blur - --shadow-* is none and .elev-* is forced flat (The Drawn-Boundary Rule).",
+      "Don't fill a category colour behind text or turn it into a chip/pill (The Swatch-Not-Fill Rule).",
+      "Don't use vermilion for emphasis that isn't outflow, or for a category.",
+      "Don't round corners past 4px.",
+      "Don't bring back a ring/donut chart; the proportion ruler is the only breakdown visual.",
+      "Don't animate tallies or totals (no count-up), and don't add view/month-step transitions beyond plain swaps.",
+      "Don't set UI chrome in the serif or headings above 17px in the grotesque.",
+      "Don't put transaction detail or editing on Overview - it lives in Income / Expenses."
+    ]
+  }
+}

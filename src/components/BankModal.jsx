@@ -14,7 +14,7 @@ export default function BankModal({ newBankName, onNewBankNameChange, onSubmit, 
         </div>
         {hasBanks && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-            <div style={{ fontSize: 11, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'color-mix(in srgb, var(--color-text) 55%, transparent)' }}>Saved banks</div>
+            <div style={{ fontSize: 12.5, color: 'var(--color-ink-soft)' }}>Saved banks</div>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
               {bankTagList.map((bank) => (
                 <span key={bank.name} className="tag tag-neutral" style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>

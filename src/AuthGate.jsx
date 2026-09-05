@@ -106,7 +106,7 @@ export default class AuthGate extends React.Component {
                 placeholder="6+ characters"
               />
             </div>
-            {error && <div style={{ fontSize: 12.5, color: 'oklch(58% 0.22 25)' }}>{error}</div>}
+            {error && <div style={{ fontSize: 12.5, color: 'var(--color-danger)' }}>{error}</div>}
             <button type="submit" className="btn btn-primary btn-block">
               {mode === 'signin' ? 'Sign in' : 'Create account'}
             </button>
@@ -118,6 +118,6 @@ export default class AuthGate extends React.Component {
       );
     }
 
-    return <LedgerApp cloud={this.makeCloud(user.uid)} onSignOut={() => signOut(auth)} />;
+    return <LedgerApp cloud={this.makeCloud(user.uid)} userEmail={user.email} onSignOut={() => signOut(auth)} />;
   }
 }

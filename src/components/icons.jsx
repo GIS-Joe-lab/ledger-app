@@ -86,3 +86,12 @@ export function MenuIcon({ size = 16 }) {
     </svg>
   );
 }
+
+export function PowerIcon({ size = 16 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" {...base} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 4v8"></path>
+      <path d="M7.5 7.5a6.5 6.5 0 1 0 9 0"></path>
+    </svg>
+  );
+}

@@ -34,7 +34,7 @@ export default function MortgageModal({
           <input className="input" type="number" min="0" step="1" value={termYears} onChange={onTermYearsChange} placeholder="30" />
         </div>
 
-        <div style={{ fontSize: 11, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'color-mix(in srgb, var(--color-text) 55%, transparent)', marginTop: 4 }}>Escrow (monthly)</div>
+        <div style={{ fontSize: 12.5, color: 'var(--color-ink-soft)', marginTop: 4, borderBottom: '1px solid var(--color-divider)', paddingBottom: 6 }}>Escrow (monthly)</div>
 
         <div className="field">
           <label>Home insurance</label>
@@ -56,20 +56,20 @@ export default function MortgageModal({
           <input className="input" type="number" min="0" step="0.01" value={extraPayment} onChange={onExtraPaymentChange} placeholder="0.00" />
         </div>
 
-        <div className="card" style={{ background: 'color-mix(in srgb, var(--color-accent) 8%, transparent)', gap: 6 }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, opacity: 0.8 }}>
+        <div className="card tnum" style={{ gap: 6 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: 'var(--color-ink-soft)' }}>
             <span>Principal &amp; interest</span>
             <span>{fmtMoney(principalInterest)}/mo</span>
           </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, opacity: 0.65, paddingLeft: 12 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: 'var(--color-ink-soft)', paddingLeft: 12 }}>
             <span>— interest (first payment)</span>
             <span>{fmtMoney(interestPortion)}</span>
           </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, opacity: 0.65, paddingLeft: 12 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: 'var(--color-ink-soft)', paddingLeft: 12 }}>
             <span>— principal (first payment)</span>
             <span>{fmtMoney(principalPortion)}</span>
           </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 16, fontWeight: 600, marginTop: 4 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 16, fontWeight: 600, marginTop: 4, paddingTop: 8, borderTop: '1px solid var(--color-divider)' }}>
             <span>Total monthly payment</span>
             <span>{fmtMoney(total)}</span>
           </div>

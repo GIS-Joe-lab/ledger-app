@@ -1,7 +1,6 @@
 import React from 'react';
 import { INCOME_CATEGORIES, EXPENSE_CATEGORIES, MORTGAGE_CATEGORIES, STORAGE_KEY, BANK_STORAGE_KEY, FREQUENCIES } from './constants.js';
 import { categoryStyle } from './utils/category.js';
-import { buildDonutSegments } from './utils/donut.js';
 import { occurrencesInMonth } from './utils/recurrence.js';
 import { fmtMoney, fmtDate } from './utils/format.js';
 import { monthlyMortgageTotal } from './utils/mortgage.js';
@@ -23,6 +22,8 @@ export default class LedgerApp extends React.Component {
       bankModalOpen: false,
       newBankName: '',
       view: 'overview',
+      focusCategory: null,
+      lastAddedId: null,
       sidebarCollapsed: false,
       mobileNavOpen: false,
       viewFilter: 'Both',
@@ -105,7 +106,9 @@ export default class LedgerApp extends React.Component {
     this.setState({ entries });
   }
 
-  setView = (v) => this.setState({ view: v, mobileNavOpen: false });
+  setView = (v, cat = null) => this.setState({ view: v, focusCategory: v === 'expense' ? cat : null, mobileNavOpen: false });
+  drillCategory = (cat) => this.setState({ view: 'expense', focusCategory: cat, mobileNavOpen: false });
+  clearFocusCategory = () => this.setState({ focusCategory: null });
   toggleSidebar = () => this.setState((s) => ({ sidebarCollapsed: !s.sidebarCollapsed }));
   toggleMobileNav = () => this.setState((s) => ({ mobileNavOpen: !s.mobileNavOpen }));
   closeMobileNav = () => this.setState({ mobileNavOpen: false });
@@ -214,6 +217,7 @@ export default class LedgerApp extends React.Component {
         ? { ...en, title, amount, date: formDate, category: formCategory, description: formDescription, frequency, ongoing: formOngoing, endDate, bankAccount, earner, autoPay, autoPayDate, mortgage }
         : en);
       this.persist(updated);
+      this.setState({ modalOpen: false });
     } else {
       const newEntry = {
         id: 'e' + Date.now() + Math.random().toString(36).slice(2, 7),
@@ -221,8 +225,8 @@ export default class LedgerApp extends React.Component {
         description: formDescription, frequency, ongoing: formOngoing, endDate, bankAccount, earner, autoPay, autoPayDate, mortgage,
       };
       this.persist([...entries, newEntry]);
+      this.setState({ modalOpen: false, lastAddedId: newEntry.id });
     }
-    this.setState({ modalOpen: false });
   };
 
   deleteEntry(id) {
@@ -320,24 +324,54 @@ export default class LedgerApp extends React.Component {
       return Object.keys(map).map(k => ({ label: k, value: map[k], color: categoryStyle(k, type).bg, displayValue: fmtMoney(map[k]) }))
         .sort((a, b) => b.value - a.value);
     };
-    const incomeDonut = buildDonutSegments(groupByCategory(activeIncome, 'income'), 70);
-    const expenseDonut = buildDonutSegments(groupByCategory(activeExpense, 'expense'), 70);
-    const overallDonut = buildDonutSegments([
-      { label: 'Income', value: totalIncome, color: 'oklch(60% 0.19 145)', displayValue: fmtMoney(totalIncome) },
-      { label: 'Expenses', value: totalExpense, color: 'oklch(58% 0.22 25)', displayValue: fmtMoney(totalExpense) },
-    ], 70);
+    const withPct = (groups, total) => groups.map(g => ({
+      label: g.label, color: g.color, value: g.value, displayValue: g.displayValue,
+      pct: total > 0 ? Math.round((g.value / total) * 100) : 0,
+    }));
+    const incomeBreakdown = withPct(groupByCategory(activeIncome, 'income'), totalIncome);
+    const expenseBreakdown = withPct(groupByCategory(activeExpense, 'expense'), totalExpense);
 
     const monthLabel = new Date(viewYear, viewMonth, 1).toLocaleString('en-US', { month: 'long', year: 'numeric' });
     const categoryOptions = [...(modalType === 'income' ? INCOME_CATEGORIES : EXPENSE_CATEGORIES)].sort((a, b) => a.localeCompare(b));
 
+    // Overview: the biggest recurring commitments, and one plain-language
+    // reading of the month.
+
+    const RECURRING_FIXED = ['Monthly', 'Bi-monthly', 'Quarterly', 'Yearly'];
+    const fixedCosts = activeExpense
+      .filter(x => RECURRING_FIXED.includes(x.entry.frequency || 'One-time'))
+      .map(x => {
+        const monthlyValue = x.entry.amount * x.count * x.factor;
+        return {
+          id: x.entry.id,
+          title: (x.entry.title && x.entry.title.trim()) ? x.entry.title : x.entry.category,
+          color: categoryStyle(x.entry.category, 'expense').bg,
+          amount: monthlyValue,
+          displayAmount: fmtMoney(monthlyValue),
+          isMortgage: x.entry.category === 'Mortgage',
+        };
+      })
+      .sort((a, b) => (b.isMortgage - a.isMortgage) || (b.amount - a.amount))
+      .slice(0, 5);
+
+    let readingSentence = null;
+    if ((totalIncome + totalExpense) > 0) {
+      const top = expenseBreakdown.slice(0, 2).map(c => c.label);
+      const lead = top.length ? ('Spending was led by ' + top.join(' and ') + '. ') : '';
+      readingSentence = lead + (net >= 0
+        ? ('You finished ' + monthLabel + ' ' + fmtMoney(net) + ' ahead.')
+        : ('You spent ' + fmtMoney(Math.abs(net)) + ' more than you brought in.'));
+    }
+
     return {
-      incomeEntries, expenseEntries, incomeDonut, expenseDonut, overallDonut,
+      incomeEntries, expenseEntries, incomeBreakdown, expenseBreakdown,
       overallHasData: (totalIncome + totalExpense) > 0,
       totalIncome, totalExpense, net,
       totalIncomeDisplay: fmtMoney(totalIncome),
       totalExpenseDisplay: fmtMoney(totalExpense),
       netDisplay: (net >= 0 ? '' : '−') + fmtMoney(Math.abs(net)),
-      netColor: net >= 0 ? 'var(--color-accent-300)' : 'var(--color-text)',
+      netColor: net >= 0 ? 'var(--color-text)' : 'var(--color-accent)',
+      fixedCosts, readingSentence,
       incomeEmpty: incomeEntries.length === 0,
       incomeHasRows: incomeEntries.length > 0,
       expenseEmpty: expenseEntries.length === 0,
@@ -354,7 +388,7 @@ export default class LedgerApp extends React.Component {
       formMortgageLoanAmount, formMortgageInterestRate, formMortgageTermYears,
       formMortgageHomeInsurance, formMortgageFloodInsurance, formMortgagePropertyTax, formMortgageExtraPayment } = this.state;
     const vm = this.computeViewModel();
-    const { onSignOut } = this.props;
+    const { onSignOut, userEmail } = this.props;
 
     const bankTagList = bankAccounts.map(b => ({ name: b, onRemove: () => this.removeBank(b) }));
     const isMortgageCategory = modalType === 'expense' && this.isMortgageCategory(formCategory);
@@ -363,7 +397,7 @@ export default class LedgerApp extends React.Component {
 
     return (
       <div className="ledger-shell" style={{ display: 'flex', flexDirection: 'row', minHeight: '100vh', background: 'var(--color-bg)', color: 'var(--color-text)', fontFamily: 'var(--font-body)' }}>
-        <Sidebar view={view} onSetView={this.setView} onAddBank={this.openAddBank} onSignOut={onSignOut} collapsed={sidebarCollapsed} onToggleCollapsed={this.toggleSidebar} mobileOpen={mobileNavOpen} />
+        <Sidebar view={view} onSetView={this.setView} onAddBank={this.openAddBank} onSignOut={onSignOut} userEmail={userEmail} collapsed={sidebarCollapsed} onToggleCollapsed={this.toggleSidebar} mobileOpen={mobileNavOpen} />
 
         {mobileNavOpen && <div className="ledger-mobile-backdrop" onClick={this.closeMobileNav} />}
 
@@ -380,28 +414,45 @@ export default class LedgerApp extends React.Component {
           />
 
           {view === 'overview' && (
-            <OverviewView monthLabel={vm.monthLabel} netDisplay={vm.netDisplay} netColor={vm.netColor} overallHasData={vm.overallHasData} overallDonut={vm.overallDonut} />
+            <OverviewView
+              monthLabel={vm.monthLabel}
+              totalIncomeDisplay={vm.totalIncomeDisplay}
+              totalExpenseDisplay={vm.totalExpenseDisplay}
+              netDisplay={vm.netDisplay}
+              netColor={vm.netColor}
+              overallHasData={vm.overallHasData}
+              expenseBreakdown={vm.expenseBreakdown}
+              fixedCosts={vm.fixedCosts}
+              readingSentence={vm.readingSentence}
+              onDrillCategory={this.drillCategory}
+              onAddIncome={() => this.openAdd('income')}
+              onAddExpense={() => this.openAdd('expense')}
+            />
           )}
 
           {view === 'income' && (
             <IncomeView
               totalIncomeDisplay={vm.totalIncomeDisplay}
-              incomeDonut={vm.incomeDonut}
+              incomeBreakdown={vm.incomeBreakdown}
               incomeEntries={vm.incomeEntries}
               incomeEmpty={vm.incomeEmpty}
               incomeHasRows={vm.incomeHasRows}
               onAddIncome={() => this.openAdd('income')}
+              newId={this.state.lastAddedId}
             />
           )}
 
           {view === 'expense' && (
             <ExpenseView
               totalExpenseDisplay={vm.totalExpenseDisplay}
-              expenseDonut={vm.expenseDonut}
+              expenseBreakdown={vm.expenseBreakdown}
               expenseEntries={vm.expenseEntries}
               expenseEmpty={vm.expenseEmpty}
               expenseHasRows={vm.expenseHasRows}
               onAddExpense={() => this.openAdd('expense')}
+              focusCategory={this.state.focusCategory}
+              onClearFocus={this.clearFocusCategory}
+              newId={this.state.lastAddedId}
             />
           )}
         </main>

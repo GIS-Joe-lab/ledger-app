@@ -1,59 +1,55 @@
 import React from 'react';
 import { EditIcon, TrashIcon } from './icons.jsx';
 
-const dimCell = { color: 'color-mix(in srgb, var(--color-text) 75%, transparent)' };
+const stop = (fn) => (e) => { e.stopPropagation(); fn(); };
 
 /**
- * Shared entries table for both the Income and Expense views. `variant`
- * controls the one column that differs between them: income shows
- * "Earner", expense shows "Paid by" + "Auto pay".
+ * The month's entries as register lines — one ruled row each, the whole row
+ * a target that opens the entry for detail/editing. `variant` controls the
+ * one field that differs: income shows the earner, expense shows who paid
+ * and any auto-pay date. All secondary facts are set as plain text, not
+ * chips or badges.
  */
-export default function EntryTable({ entries, variant }) {
+export default function EntryTable({ entries, variant, newId }) {
   return (
-    <div style={{ overflowX: 'auto', width: '100%' }}>
-      <table className="table">
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>Category</th>
-            <th>Account</th>
-            <th>{variant === 'income' ? 'Earner' : 'Paid by'}</th>
-            {variant === 'expense' ? <th>Auto pay</th> : null}
-            <th>Amount</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {entries.map((entry) => (
-            <tr key={entry.id}>
-              <td style={{ fontWeight: 600 }}>{entry.displayTitle}</td>
-              <td><span className="tag" style={{ background: entry.categoryBg, color: entry.categoryText }}>{entry.category}</span></td>
-              <td style={dimCell}>{entry.displayBankAccount}</td>
-              <td style={dimCell}>{entry.displayEarner}</td>
-              {variant === 'expense' ? <td style={dimCell}>{entry.autoPay ? ('Yes · ' + entry.displayAutoPayDate) : 'No'}</td> : null}
-              <td style={{ fontWeight: 600 }}>{entry.displayAmount}</td>
-              <td>
-                <div style={{ display: 'flex', gap: 2, justifyContent: 'flex-end' }}>
-                  <button
-                    aria-label="Edit"
-                    style={{ display: 'flex', padding: 6, border: 'none', background: 'transparent', borderRadius: 'var(--radius-sm)', color: 'color-mix(in srgb, var(--color-text) 55%, transparent)', cursor: 'pointer' }}
-                    onClick={entry.onEdit}
-                  >
-                    <EditIcon />
-                  </button>
-                  <button
-                    aria-label="Delete"
-                    style={{ display: 'flex', padding: 6, border: 'none', background: 'transparent', borderRadius: 'var(--radius-sm)', color: 'color-mix(in srgb, var(--color-text) 55%, transparent)', cursor: 'pointer' }}
-                    onClick={entry.onDelete}
-                  >
-                    <TrashIcon />
-                  </button>
-                </div>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div className="reg">
+      {entries.map((entry) => (
+        <div
+          key={entry.id}
+          className={'reg-row' + (entry.id === newId ? ' is-new' : '')}
+          role="button"
+          tabIndex={0}
+          onClick={entry.onEdit}
+          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); entry.onEdit(); } }}
+          aria-label={'Edit ' + entry.displayTitle}
+        >
+          <span className="reg-title">{entry.displayTitle}</span>
+          <span className={'reg-amount' + (variant === 'expense' ? ' is-out' : '')}>{entry.displayAmount}</span>
+
+          <div className="reg-meta">
+            <span className="reg-cat"><i style={{ background: entry.categoryBg }} />{entry.category}</span>
+            <span className="reg-sep" aria-hidden="true" />
+            <span>{entry.displayBankAccount}</span>
+            <span className="reg-sep" aria-hidden="true" />
+            <span>{variant === 'income' ? entry.displayEarner : ('Paid by ' + entry.displayEarner)}</span>
+            {variant === 'expense' && entry.autoPay && (
+              <>
+                <span className="reg-sep" aria-hidden="true" />
+                <span>Auto pay {entry.displayAutoPayDate}</span>
+              </>
+            )}
+            <span className="reg-sep" aria-hidden="true" />
+            <span>{entry.frequencyLabel}</span>
+            <span className="reg-sep" aria-hidden="true" />
+            <span>{entry.displayDate}</span>
+          </div>
+
+          <div className="reg-actions">
+            <button aria-label="Edit entry" onClick={stop(entry.onEdit)}><EditIcon /></button>
+            <button aria-label="Delete entry" onClick={stop(entry.onDelete)}><TrashIcon /></button>
+          </div>
+        </div>
+      ))}
     </div>
   );
 }

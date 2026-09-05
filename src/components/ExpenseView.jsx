@@ -1,26 +1,50 @@
 import React from 'react';
-import DonutChart from './DonutChart.jsx';
+import SpendBar from './SpendBar.jsx';
 import EntryTable from './EntryTable.jsx';
-import { PlusIcon } from './icons.jsx';
+import { PlusIcon, CloseIcon } from './icons.jsx';
 
-export default function ExpenseView({ totalExpenseDisplay, expenseDonut, expenseEntries, expenseEmpty, expenseHasRows, onAddExpense }) {
+export default function ExpenseView({ totalExpenseDisplay, expenseBreakdown, expenseEntries, expenseEmpty, expenseHasRows, onAddExpense, focusCategory, onClearFocus, newId }) {
+  const rows = focusCategory ? expenseEntries.filter((e) => e.category === focusCategory) : expenseEntries;
+  const showBreakdown = !focusCategory && expenseHasRows && expenseBreakdown.length > 1;
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
-      <div style={{ fontSize: 13, color: 'color-mix(in srgb, var(--color-text) 60%, transparent)' }}>
-        Total expenses this month: <span style={{ color: 'var(--color-accent-300)', fontWeight: 600 }}>{totalExpenseDisplay}</span>
+    <div className="view">
+      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)', flexWrap: 'wrap' }}>
+        <div className="view-total">Spending recorded this month — <b>{totalExpenseDisplay}</b></div>
+        {focusCategory && (
+          <span className="view-focus">
+            {focusCategory}
+            <button aria-label="Clear category filter" onClick={onClearFocus}><CloseIcon size={12} /></button>
+          </span>
+        )}
       </div>
-      {expenseHasRows && (
-        <div style={{ display: 'flex', gap: 'var(--space-6)', flexWrap: 'wrap', alignItems: 'center', padding: 'var(--space-4)', borderRadius: 'var(--radius-lg)', background: 'var(--color-surface)' }}>
-          <DonutChart segments={expenseDonut} size={140} />
+
+      {showBreakdown && (
+        <div className="view-breakdown">
+          <SpendBar items={expenseBreakdown} />
+          <ul className="ov-cats">
+            {expenseBreakdown.map((c) => (
+              <li key={c.label}>
+                <div className="ov-cat ov-cat--static">
+                  <i style={{ background: c.color }} />
+                  <span>{c.label}</span>
+                  <span className="ov-cat-val">{c.displayValue}</span>
+                  <span className="ov-cat-pct">{c.pct}%</span>
+                </div>
+              </li>
+            ))}
+          </ul>
         </div>
       )}
-      {expenseEmpty && (
-        <div style={{ padding: 'var(--space-8)', textAlign: 'center', color: 'color-mix(in srgb, var(--color-text) 55%, transparent)', border: '1px dashed var(--color-divider)', borderRadius: 'var(--radius-md)' }}>
-          No expense entries this month yet.
-        </div>
+
+      {expenseEmpty && <div className="view-empty">No spending recorded for this month yet.</div>}
+      {!expenseEmpty && focusCategory && rows.length === 0 && (
+        <div className="view-empty">Nothing in {focusCategory} this month.</div>
       )}
-      {expenseHasRows && <EntryTable entries={expenseEntries} variant="expense" />}
-      <button className="btn btn-primary btn-block" style={{ marginTop: 0 }} onClick={onAddExpense}>
+
+      {rows.length > 0 && <EntryTable entries={rows} variant="expense" newId={newId} />}
+
+      <button className="btn btn-primary view-add" onClick={onAddExpense}>
         <PlusIcon size={14} strokeWidth={2.4} />
         Add expense
       </button>

@@ -1,186 +1,182 @@
+/* ══════════════════════════════════════════════════════════════════════════
+   Ledger — a household account book kept monthly.
+   Visual world: the Japanese kakeibo (家計簿), read through Western letterpress.
+   Warm recycled-paper ground, two inks (indigo + vermilion), every row on a
+   ruled baseline. Hairline rules only — no shadows, no elevated cards, radius
+   never past 4px. Money is always set in tabular figures.
+   ══════════════════════════════════════════════════════════════════════ */
+
 :root {
-  --color-bg: oklch(99% 0.003 260);
-  --color-surface: oklch(97% 0.005 260);
-  --color-text: oklch(22% 0.015 265);
-  --color-accent: oklch(50% 0.17 289); /* darkened from the dark-ground value below for contrast on the white ground; review round 7 (Barron): the accent moves to
-     the product's blurple — OKLCH hue 289.2, the hue of the app's own Pro
-     accent (#9a8fe0, --om-accent-pro) — at the same lightness the steel
-     accent held (L 0.660, so the documented ratios survive) and chroma
-     in the product blurple's own range (its token sits at C 0.118; the
-     accent takes 0.125, from the old steel's 0.030):
-     the accent now reads as an accent rather than another neutral. */
-  --color-accent-2: oklch(52% 0.16 289); /* the machine-derived stand-in follows: same
-     hue, same L 0.734, chroma at the same 2:3 proportion it held */
-  --color-divider: color-mix(in srgb, var(--color-text) 16%, transparent);
+  color-scheme: light;
 
-  /* Tonal ramps — generated in OKLCH on one shared lightness scale, so the
-     same step of any role matches the others in visual value. */
-  --color-neutral-100: #f3f5fe;
-  --color-neutral-200: #e4e7f5;
-  --color-neutral-300: #cfd3e5;
-  --color-neutral-400: #b2b6ca;
-  --color-neutral-500: #9397ab;
-  --color-neutral-600: #75798c;
-  --color-neutral-700: #595d6c;
-  --color-neutral-800: #3f424d;
-  --color-neutral-900: #292b31;
+  /* — ground & ink — */
+  --color-bg: #f4f1e8;          /* recycled-pulp paper */
+  --color-surface: #efeae0;     /* a slightly deeper leaf, for inset panels only */
+  --color-text: #2e3a54;        /* indigo ink — primary */
+  --color-ink-soft: #5c574a;    /* graphite — secondary text (>=5:1 on paper) */
+  --color-ink-faint: #635d4c;   /* placeholder / disabled — >=4.5:1 on paper */
 
-  --color-accent-100: #f5f4ff;
-  --color-accent-200: #e7e5fe;
-  --color-accent-300: oklch(42% 0.16 289);
-  --color-accent-400: #b5abfc;
-  --color-accent-500: #968ae0;
-  --color-accent-600: #796cbf;
-  --color-accent-700: #5d5294;
-  --color-accent-800: #423a6a;
-  --color-accent-900: #2b2741;
+  --color-accent: #9e4630;      /* vermilion — outflow, negatives, key marks */
+  --color-accent-hover: #883a26;
+  --color-accent-soft: #b26a52; /* vermilion for larger / decorative use */
+  --color-danger: #99271b;
 
-  --color-accent-2-100: #f5f4ff;
-  --color-accent-2-200: #e7e5fe;
-  --color-accent-2-300: #d2cefd;
-  --color-accent-2-400: #b5afe8;
-  --color-accent-2-500: #9690c9;
-  --color-accent-2-600: #7972a9;
-  --color-accent-2-700: #5c5783;
-  --color-accent-2-800: #423e5d;
-  --color-accent-2-900: #2b293a;
+  --color-divider: #dcd6c4;     /* baseline hairline on paper */
+  --color-divider-strong: #c4bca6;
 
-  /* Deck section-divider ground — review round 3: saturation as presence.
-     Dividers take a saturated deep indigo (hue 277, the neutral ramp's own
-     family; C 0.094 — written when the accent held C 0.030, before the
-     round-7 blurple raised it past the ground's) with a lighter bloom and
-     a ghost tint of the same hue, while the slide grounds stay
-     desaturated. Deck-scale fills only — not interface colors. */
-  --color-section: #262a60;
-  --color-section-glow: #353b80;
-  --color-section-ghost: #4c5397;
+  /* Neutral steps still referenced: 100/700 are the unknown-category swatch
+     fallback (utils/category.js); 900 tints the dialog backdrops. */
+  --color-neutral-100: #f4f1e8;
+  --color-neutral-700: #5c574a;
+  --color-neutral-900: #2a2620;
 
-  --font-heading: "Inter", system-ui, sans-serif;
+  --font-heading: "Spectral", Georgia, "Times New Roman", serif;
   --font-heading-weight: 500;
-  --font-body: "Inter", system-ui, sans-serif;
+  --font-body: "Hanken Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-figure: "Spectral", Georgia, serif;
 
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
   --space-4: 16px;
-  --space-6: 22px;
-  --space-8: 30px;
+  --space-6: 24px;
+  --space-8: 34px;
 
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 14px;
+  --radius-sm: 2px;
+  --radius-md: 3px;
+  --radius-lg: 4px;
 
-  /* Elevation — derived from the ground: soft ink-tinted shadows on a
-     light theme, a hairline edge + ambient darkness on a dark one. */
-  --shadow-sm: 0 0 0 1px #3f424d;
-  --shadow-md: 0 0 0 1px #595d6c, 0 6px 18px rgba(0,0,0,0.55);
-  --shadow-lg: 0 0 0 1px #9397ab, 0 16px 40px rgba(0,0,0,0.65);
+  /* No elevation in this world — rules carry every boundary. */
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: none;
 }
 
+*, *::before, *::after { box-sizing: border-box; }
+
+html { background: var(--color-bg); }
+
 body {
+  margin: 0;
   background: var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.55;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
-h1, h2, h3, h4 { font-family: var(--font-heading); font-weight: var(--font-heading-weight); }
 
-.lighten{mix-blend-mode:lighten;background-color:transparent}
-
-/* ══════════════════════════════════════════════════════════════════════════
-   Components — built with the tokens above. Plain CSS
-   on plain HTML: no JavaScript, no build step. Each class is documented in
-   readme.md and demonstrated in foundations/ and components/.
-   ══════════════════════════════════════════════════════════════════════ */
-
-*, *::before, *::after { box-sizing: border-box; }
-body { margin: 0; font-size: 16px; line-height: 1.55; font-weight: 400; }
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-heading); font-weight: var(--font-heading-weight);
-  line-height: 1.12; letter-spacing: -0.015em; margin: 0 0 var(--space-2);
+  font-family: var(--font-heading);
+  font-weight: var(--font-heading-weight);
+  line-height: 1.15;
+  letter-spacing: -0.006em;
+  margin: 0 0 var(--space-2);
+  color: var(--color-text);
 }
-h1 { font-size: 42px; }
-h2 { font-size: 32px; }
-h3 { font-size: 25px; }
-h4 { font-size: 20px; }
-h5 { font-size: 16px; }
-h6 { font-size: 13px; }
-h6 { letter-spacing: 0.08em; text-transform: uppercase; }
+h1 { font-size: 40px; }
+h2 { font-size: 28px; }
+h3 { font-size: 20px; letter-spacing: 0; }
+h4 { font-size: 17px; letter-spacing: 0; }
+h5 { font-size: 15px; letter-spacing: 0; }
+h6 {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--color-ink-soft);
+}
 p { margin: 0 0 var(--space-3); }
-a { color: var(--color-accent); text-underline-offset: 3px; }
+
+a { color: var(--color-accent); text-underline-offset: 3px; text-decoration-thickness: 1px; }
+a:hover { color: var(--color-accent-hover); }
+
 img { display: block; max-width: 100%; }
 figure { margin: 0; }
-figcaption {
-  font-size: 12px; margin-top: var(--space-1);
-  color: color-mix(in srgb, var(--color-text) 55%, transparent);
-}
-.text-muted { color: color-mix(in srgb, var(--color-text) 55%, transparent); }
+figcaption { font-size: 12px; margin-top: var(--space-1); color: var(--color-ink-soft); }
+
+.text-muted { color: var(--color-ink-soft); }
+
+/* Browser surfaces, themed off the paper world. */
 :focus { outline: none; }
 :focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
-::selection { background: color-mix(in srgb, var(--color-accent) 30%, transparent); }
+::selection { background: color-mix(in srgb, var(--color-accent) 22%, transparent); }
+::placeholder { color: var(--color-ink-faint); opacity: 1; }
+* { scrollbar-color: var(--color-divider-strong) transparent; scrollbar-width: thin; }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb { background: var(--color-divider-strong); border-radius: 10px; border: 3px solid var(--color-bg); }
+::-webkit-scrollbar-track { background: transparent; }
+
+/* Money and any tabular figure. */
+.tnum, .fig { font-variant-numeric: tabular-nums lining-nums; font-feature-settings: "tnum" 1, "lnum" 1; }
 
 /* — rules — */
-/* Rules fade to transparent at both ends instead of stopping cleanly — a
-   Nocturne signature. The ramp is 48px an end (one deck baseline unit),
-   painted from the same divider token. Freestanding rules fade; box
-   outlines, in-control separators, and short accent marks stay solid. */
 .hr {
-  height: 1px; border: 0; margin: var(--space-4) 0;
-  background: linear-gradient(to right,
-    transparent, var(--color-divider) 48px,
-    var(--color-divider) calc(100% - 48px), transparent);
+  height: 0; border: 0; border-top: 1px solid var(--color-divider);
+  margin: var(--space-4) 0;
 }
 
 /* — buttons — */
 .btn {
-  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 7px;
   cursor: pointer; text-decoration: none;
-  font-family: var(--font-heading); font-weight: var(--font-heading-weight);
-  font-size: 15px; line-height: 1.2; color: var(--color-text); min-height: 40px;
-  background: transparent; border: 1px solid transparent;
-  padding: var(--space-2) calc(var(--space-3) * 1.4);
+  font-family: var(--font-body); font-weight: 500; font-size: 14.5px;
+  line-height: 1.2; color: var(--color-text); min-height: 40px;
+  background: transparent; border: 1px solid var(--color-divider-strong);
+  padding: var(--space-2) var(--space-4);
   border-radius: var(--radius-md);
+  transition: background-color 0.12s ease, border-color 0.12s ease, color 0.12s ease;
 }
 .btn svg { display: block; }
-.btn:disabled { opacity: 0.45; cursor: not-allowed; }
-.btn-primary { color: var(--color-accent); border-color: var(--color-accent); }
-.btn-primary:hover { background: color-mix(in srgb, var(--color-accent) 12%, transparent); }
-.btn-primary:active { background: color-mix(in srgb, var(--color-accent) 22%, transparent); }
-.btn-secondary { border-color: var(--color-divider); }
-.btn-secondary:hover { background: color-mix(in srgb, var(--color-text) 7%, transparent); }
-.btn-secondary:active { background: color-mix(in srgb, var(--color-text) 14%, transparent); }
-.btn-ghost { color: var(--color-accent); padding-inline: var(--space-1); }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* Primary — a stamped ink block. */
+.btn-primary { background: var(--color-text); border-color: var(--color-text); color: var(--color-bg); }
+.btn-primary:hover:not(:disabled) { background: #26314a; border-color: #26314a; }
+.btn-primary:active:not(:disabled) { background: #1f293f; }
+
+.btn-secondary { background: transparent; border-color: var(--color-divider-strong); color: var(--color-text); }
+.btn-secondary:hover { background: color-mix(in srgb, var(--color-text) 6%, transparent); }
+.btn-secondary:active { background: color-mix(in srgb, var(--color-text) 11%, transparent); }
+
+.btn-ghost { border-color: transparent; color: var(--color-accent); padding-inline: var(--space-2); }
 .btn-ghost:hover { background: color-mix(in srgb, var(--color-accent) 10%, transparent); }
-.btn-ghost:active { background: color-mix(in srgb, var(--color-accent) 18%, transparent); }
+.btn-ghost:active { background: color-mix(in srgb, var(--color-accent) 16%, transparent); }
+
 .btn-icon { width: 40px; height: 40px; padding: 0; min-height: 40px; }
 .btn-block { width: 100%; margin-top: var(--space-2); }
 
 /* — forms — */
-.field {
-  /* .field is a flex item inside .dialog's column flex; without this,
-     native date inputs' non-shrinkable intrinsic width (day/month/year
-     segments + calendar icon) overflows the dialog on narrow screens. */
-  min-width: 0;
-}
+.field { min-width: 0; }
 .field > label {
   display: block; font-size: 13px; margin-bottom: 6px;
-  color: color-mix(in srgb, var(--color-text) 70%, transparent);
+  color: var(--color-ink-soft);
 }
 .input {
-  width: 100%; min-height: 40px; padding: 8px 12px; font: inherit;
+  width: 100%; min-height: 40px; padding: 9px 12px; font: inherit;
   font-size: 15px; color: var(--color-text); caret-color: var(--color-accent);
-  background: var(--color-surface);
-  border: 1px solid var(--color-divider); border-radius: var(--radius-md);
+  background: color-mix(in srgb, #ffffff 34%, var(--color-bg));
+  border: 1px solid var(--color-divider-strong); border-radius: var(--radius-md);
+  transition: border-color 0.12s ease;
 }
-.input:hover { border-color: color-mix(in srgb, var(--color-text) 45%, transparent); }
-.input:focus-visible { border-color: var(--color-accent); outline-offset: 0; }
+.input:hover { border-color: var(--color-ink-soft); }
+.input:focus-visible { border-color: var(--color-accent); outline: none; }
+select.input { appearance: none; -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%235c574a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-position: right 12px center; background-size: 14px 14px; background-repeat: no-repeat;
+  padding-right: 36px;
+}
 textarea.input { min-height: 90px; resize: vertical; }
+
 .radio { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font-size: 15px; }
 .radio input, .seg-opt input {
   position: absolute; opacity: 0; width: 0; height: 0; pointer-events: none;
 }
 .radio .dot {
   width: 16px; height: 16px; flex: none; border-radius: 50%;
-  border: 1.5px solid var(--color-divider);
+  border: 1.5px solid var(--color-divider-strong);
 }
 .radio:hover .dot { border-color: var(--color-accent); }
 .radio input:checked + .dot {
@@ -188,155 +184,259 @@ textarea.input { min-height: 90px; resize: vertical; }
   box-shadow: inset 0 0 0 4px var(--color-bg);
 }
 .radio input:focus-visible + .dot { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+
 .seg {
   display: inline-flex; overflow: hidden;
-  border: 1px solid var(--color-divider); border-radius: var(--radius-md);
+  border: 1px solid var(--color-divider-strong); border-radius: var(--radius-md);
 }
 .seg-opt {
   display: inline-flex; align-items: center; gap: 6px;
-  padding: 9px 14px; font-size: 14px; cursor: pointer;
+  padding: 9px 14px; font-size: 14px; cursor: pointer; color: var(--color-ink-soft);
+  transition: background-color 0.12s ease, color 0.12s ease;
 }
-.seg-opt + .seg-opt { border-left: 1px solid var(--color-divider); }
-.seg-opt:has(input:checked) { color: var(--color-accent); box-shadow: inset 0 0 0 1px var(--color-accent); }
-.seg-opt:not(:has(input:checked)):hover { background: color-mix(in srgb, var(--color-text) 7%, transparent); }
+.seg-opt + .seg-opt { border-left: 1px solid var(--color-divider-strong); }
+.seg-opt:has(input:checked) { color: var(--color-text); background: color-mix(in srgb, var(--color-text) 9%, transparent); font-weight: 500; }
+.seg-opt:not(:has(input:checked)):hover { background: color-mix(in srgb, var(--color-text) 5%, transparent); }
 .seg-opt:has(input:focus-visible) { outline: 2px solid var(--color-accent); outline-offset: -2px; }
 
-/* — cards — */
+/* — panel (bordered, never elevated) — the mortgage-calculator readout — */
 .card {
   display: flex; flex-direction: column; gap: var(--space-2);
-  padding: var(--space-4); border-radius: var(--radius-md); background: var(--color-surface);
+  padding: var(--space-4); border-radius: var(--radius-md);
+  background: var(--color-surface); border: 1px solid var(--color-divider);
 }
-.card-kicker { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-accent); }
-.card-title {
-  font-family: var(--font-heading); font-weight: var(--font-heading-weight);
-  font-size: 18px; line-height: 1.2;
-}
-.card-body { margin: 0; font-size: 14px; opacity: 0.8; flex: 1; }
-.card-meta {
-  display: flex; align-items: center; gap: 6px; font-size: 12px;
-  color: color-mix(in srgb, var(--color-text) 50%, transparent);
-}
-.elev-sm { box-shadow: var(--shadow-sm); }
-.elev-md { box-shadow: var(--shadow-md); }
-.elev-lg { box-shadow: var(--shadow-lg); }
 
 /* — tags — */
 .tag {
-  display: inline-flex; align-items: center; font-size: 12px;
-  letter-spacing: 0.02em; padding: 4px 11px;
-  border-radius: calc(var(--radius-md) * 0.75);
+  display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px;
+  padding: 3px 9px; border-radius: var(--radius-sm);
+  border: 1px solid var(--color-divider-strong); color: var(--color-text);
 }
-.tag-accent { background: var(--color-accent-800); color: var(--color-accent-100); }
-.tag-accent-2 { background: var(--color-accent-2-800); color: var(--color-accent-2-100); }
-.tag-neutral { background: var(--color-neutral-800); color: var(--color-neutral-100); }
-.tag-outline { border: 1px solid var(--color-accent); color: var(--color-accent); }
+.tag-neutral { background: transparent; }
+.tag-accent { border-color: var(--color-accent); color: var(--color-accent); }
+.tag-outline { border-color: var(--color-accent); color: var(--color-accent); }
 
-/* — navigation — */
-.nav {
-  display: flex; align-items: center; gap: var(--space-4);
-  padding: var(--space-3) var(--space-4);
-  border-bottom: none;
-}
-.nav-brand {
-  font-family: var(--font-heading); font-weight: var(--font-heading-weight);
-  font-size: 19px; margin-right: auto;
-}
+/* — navigation (shell nav is inline-styled in Sidebar) — */
+.nav { display: flex; align-items: center; gap: var(--space-4); padding: var(--space-3) var(--space-4); }
+.nav-brand { font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: 19px; margin-right: auto; }
 .nav a { color: inherit; text-decoration: none; font-size: 15px; }
 .nav a:hover, .nav a[aria-current='page'] { color: var(--color-accent); }
 
-/* — tables — */
-.table { width: 100%; border-collapse: collapse; font-size: 15px; }
-.table th {
-  text-align: left; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;
-  color: color-mix(in srgb, var(--color-text) 60%, transparent);
-  padding: var(--space-3) var(--space-2); border-bottom: 1px solid transparent; /* keeps layout; the row paints the fading rule */
+/* — register (the entry list) — */
+.reg { display: flex; flex-direction: column; }
+.reg-row {
+  display: flex; flex-wrap: wrap; align-items: baseline;
+  gap: 3px var(--space-4);
+  padding: 12px 4px 11px;
+  border-bottom: 1px solid var(--color-divider);
+  background-image: linear-gradient(var(--color-accent), var(--color-accent));
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 100% 0;
+  cursor: pointer;
+  transition: background-color 0.12s ease;
 }
-.table td {
-  padding: var(--space-3) var(--space-2);
-  border-bottom: 1px solid transparent;
+.reg-row:hover { background-color: color-mix(in srgb, var(--color-text) 4%, transparent); }
+.reg-row:focus-visible { outline: 2px solid var(--color-accent); outline-offset: -2px; }
+.reg-row.is-new { animation: rule-in 0.55s ease-out both; }
+.reg-row.is-new .reg-title,
+.reg-row.is-new .reg-amount { animation: settle-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; }
+@keyframes rule-in {
+  0% { background-size: 0 2px; }
+  60% { background-size: 100% 2px; }
+  100% { background-size: 100% 0; }
 }
-/* Row rules as row-level strips so the end-fade spans the row, not each cell. */
-.table thead tr {
-  background: linear-gradient(to right,
-    transparent, var(--color-divider) 48px,
-    var(--color-divider) calc(100% - 48px), transparent) no-repeat bottom / 100% 1px;
+@keyframes settle-in {
+  from { opacity: 0; transform: translateY(3px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
-.table tbody tr {
-  background: linear-gradient(to right,
-    transparent, color-mix(in srgb, var(--color-text) 8%, transparent) 48px,
-    color-mix(in srgb, var(--color-text) 8%, transparent) calc(100% - 48px), transparent) no-repeat bottom / 100% 1px;
+
+.reg-title { flex: 1 1 auto; min-width: 0; overflow-wrap: anywhere; font-weight: 500; color: var(--color-text); }
+.reg-amount { flex: 0 0 auto; font-family: var(--font-body); font-weight: 600; color: var(--color-text); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.reg-actions { flex: 0 0 auto; order: 5; display: inline-flex; gap: 2px; align-self: center; }
+.reg-actions button {
+  display: flex; padding: 6px; border: none; background: transparent;
+  border-radius: var(--radius-sm); color: var(--color-ink-soft); cursor: pointer;
 }
-.table tbody tr:hover {
-  /* the hover tint layers over the row rule, which keeps painting */
-  background:
-    linear-gradient(color-mix(in srgb, var(--color-text) 4%, transparent),
-                    color-mix(in srgb, var(--color-text) 4%, transparent)) no-repeat 0 0 / 100% 100%,
-    linear-gradient(to right,
-      transparent, color-mix(in srgb, var(--color-text) 8%, transparent) 48px,
-      color-mix(in srgb, var(--color-text) 8%, transparent) calc(100% - 48px), transparent) no-repeat bottom / 100% 1px;
+.reg-actions button:hover { color: var(--color-accent); background: color-mix(in srgb, var(--color-accent) 10%, transparent); }
+.reg-meta {
+  flex-basis: 100%; order: 10;
+  display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px;
+  font-size: 12.5px; color: var(--color-ink-soft);
+}
+.reg-cat { display: inline-flex; align-items: center; gap: 6px; color: var(--color-text); }
+.reg-cat i { width: 9px; height: 9px; border-radius: 2px; flex: none; }
+.reg-sep { width: 1px; height: 10px; background: var(--color-divider-strong); }
+@media (max-width: 560px) {
+  .reg-sep { width: 2px; height: 2px; border-radius: 50%; background: var(--color-ink-faint); align-self: center; }
+  .reg-meta { gap: 3px 9px; }
 }
 
 /* — dialog — */
 .dialog-backdrop {
   position: fixed; inset: 0; display: grid; place-items: center;
   padding: var(--space-4); z-index: 100;
-  background: color-mix(in srgb, var(--color-neutral-900) 50%, transparent);
+  background: color-mix(in srgb, var(--color-neutral-900) 46%, transparent);
 }
 .dialog {
   width: min(440px, 100%); display: flex; flex-direction: column; gap: var(--space-3);
-  padding: var(--space-4); border-radius: var(--radius-lg);
-  background: var(--color-surface); box-shadow: var(--shadow-lg);
+  max-height: calc(100vh - var(--space-6));
+  overflow-y: auto;
+  padding: var(--space-6); border-radius: var(--radius-lg);
+  background: var(--color-bg); border: 1px solid var(--color-text);
 }
-.dialog-title {
-  font-family: var(--font-heading); font-weight: var(--font-heading-weight);
-  font-size: 21px;
-}
-.dialog-body { font-size: 15px; opacity: 0.85; }
+.dialog-title { font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: 22px; }
+.dialog-body { font-size: 15px; color: var(--color-ink-soft); }
 .dialog-actions { display: flex; justify-content: flex-end; gap: var(--space-2); margin-top: var(--space-2); }
 
 /* — auth card — */
-.auth-card {
-  width: min(420px, 92vw); gap: var(--space-4);
-  padding: var(--space-8) var(--space-6);
-}
-.auth-card .dialog-title { font-size: 26px; }
-.auth-card .field > label { font-size: 13px; }
-.auth-card .input { min-height: 44px; padding: 10px 12px; font-size: 15px; }
-.auth-card .btn { min-height: 44px; font-size: 15px; padding: 12px calc(var(--space-3) * 1.5); }
+.auth-card { width: min(420px, 92vw); gap: var(--space-4); padding: var(--space-8) var(--space-6); }
+.auth-card .dialog-title { font-size: 27px; }
+.auth-card .input { min-height: 44px; padding: 11px 12px; }
+.auth-card .btn { min-height: 44px; font-size: 15px; }
 
-/* Mobile-only nav toggle lives in MonthHeader, next to the page title;
-   the sidebar's own toggle (used for the desktop icon-rail collapse)
-   takes over again above the 860px breakpoint. */
+/* Mobile nav toggle lives in MonthHeader; sidebar's own toggle takes over above 860px. */
 .ledger-mobile-nav-toggle { display: none; }
-
-/* Dims the page behind the mobile nav drawer; only ever mounted while
-   the drawer is open (see LedgerApp), so no display toggling needed here. */
 .ledger-mobile-backdrop {
   position: fixed; inset: 0; z-index: 55;
-  background: color-mix(in srgb, var(--color-neutral-900) 45%, transparent);
+  background: color-mix(in srgb, var(--color-neutral-900) 40%, transparent);
+}
+
+/* — Overview — a monthly spread: the ledger sum and fixed costs down the
+   left, the month's spending read out on the right, a gutter rule between.
+   Stacks to one column below 1080px. */
+.ov { display: flex; flex-direction: column; gap: var(--space-8); max-width: 780px; }
+.ov > section { min-width: 0; }
+@media (min-width: 1000px) {
+  .ov {
+    display: grid; max-width: 1160px;
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    grid-template-areas: "sum   where" "fixed where";
+    grid-template-rows: auto 1fr;
+    column-gap: clamp(28px, 4.5vw, 72px); row-gap: var(--space-8);
+    align-content: start;
+  }
+  .ov-ledger    { grid-area: sum; }
+  .ov-fixed-sec { grid-area: fixed; align-self: start; }
+  .ov-where-sec {
+    grid-area: where;
+    border-left: 1px solid var(--color-divider);
+    padding-left: clamp(24px, 4vw, 60px);
+  }
+}
+.ov-ledger { display: flex; flex-direction: column; gap: var(--space-2); }
+.ov-line {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding: 7px 0; border-bottom: 1px solid var(--color-divider);
+  font-size: 15px; color: var(--color-ink-soft);
+}
+.ov-line .fig { font-weight: 600; font-size: 17px; color: var(--color-text); }
+.ov-line.is-out .fig { color: var(--color-accent); }
+.ov-net { display: flex; flex-direction: column; gap: 4px; padding-top: var(--space-3); }
+.ov-net-label { font-size: 13.5px; color: var(--color-ink-soft); }
+.ov-net-fig {
+  font-family: var(--font-figure); font-weight: 500;
+  font-size: clamp(44px, 11vw, 68px); line-height: 1.04;
+  letter-spacing: -0.02em;
+  border-bottom: 4px double currentColor; padding-bottom: 8px; align-self: flex-start;
+}
+.ov-reading { margin: var(--space-3) 0 0; font-size: 14.5px; color: var(--color-ink-soft); max-width: 52ch; }
+.ov-add { display: flex; gap: var(--space-2); margin-top: var(--space-4); }
+
+.ov-sec-title { font-family: var(--font-heading); font-weight: 500; font-size: 18px; margin: 0 0 var(--space-3); }
+.ov-bar { display: flex; gap: 1px; height: 10px; margin-bottom: var(--space-3); background: var(--color-divider-strong); border-radius: 2px; overflow: hidden; }
+.ov-bar-seg { min-width: 2px; }
+.ov-cats { list-style: none; margin: 0; padding: 0; min-width: 0; }
+.ov-cat {
+  display: grid; grid-template-columns: auto minmax(0,1fr) auto auto; align-items: baseline;
+  gap: 10px; width: 100%; text-align: left;
+  padding: 9px 4px; border: none; border-bottom: 1px solid var(--color-divider);
+  background: transparent; cursor: pointer; font: inherit; color: var(--color-text);
+}
+.ov-cat:hover { background: color-mix(in srgb, var(--color-text) 4%, transparent); }
+.ov-cat:focus-visible { outline: 2px solid var(--color-accent); outline-offset: -2px; }
+.ov-cat--static { cursor: default; }
+.ov-cat--static:hover { background: transparent; }
+.ov-cat i { width: 10px; height: 10px; border-radius: 2px; align-self: center; }
+.ov-cat-val { font-weight: 600; font-variant-numeric: tabular-nums; }
+.ov-cat-pct { font-size: 12.5px; color: var(--color-ink-soft); font-variant-numeric: tabular-nums; min-width: 3ch; text-align: right; }
+
+.ov-fixed { list-style: none; margin: 0; padding: 0; }
+.ov-fixed li {
+  display: grid; grid-template-columns: auto minmax(0,1fr) auto; align-items: baseline; gap: 10px;
+  padding: 9px 4px; border-bottom: 1px solid var(--color-divider); font-size: 14.5px;
+}
+.ov-fixed i { width: 10px; height: 10px; border-radius: 2px; }
+.ov-fixed .fig { font-weight: 600; font-variant-numeric: tabular-nums; }
+.ov-empty { color: var(--color-ink-soft); font-size: 15px; }
+
+/* — Income / Expenses list views — */
+.view { display: flex; flex-direction: column; gap: var(--space-6); max-width: 720px; }
+.view-breakdown { max-width: 520px; }
+.view-add { align-self: stretch; margin-top: var(--space-2); }
+@media (min-width: 720px) { .view-add { align-self: flex-start; padding-inline: var(--space-6); } }
+
+.view-total { font-size: 14px; color: var(--color-ink-soft); }
+.view-total b { color: var(--color-text); font-weight: 600; font-variant-numeric: tabular-nums; }
+.view-focus {
+  display: inline-flex; align-items: center; gap: 8px; font-size: 13px;
+  padding: 4px 6px 4px 10px; border: 1px solid var(--color-divider-strong); border-radius: var(--radius-md);
+  color: var(--color-text);
+}
+.view-focus button { display: flex; padding: 2px; border: none; background: transparent; color: var(--color-ink-soft); cursor: pointer; }
+.view-focus button:hover { color: var(--color-accent); }
+.view-empty {
+  padding: var(--space-8) var(--space-4); text-align: center; color: var(--color-ink-soft);
+  border: 1px dashed var(--color-divider-strong); border-radius: var(--radius-md);
+}
+
+.ledger-page-title { display: none; }
+
+/* — month header — */
+.ledger-header { display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: var(--space-3) var(--space-4); }
+.ledger-header-title { display: flex; align-items: center; gap: 10px; margin-right: auto; min-width: 0; }
+.ledger-month-nav { display: flex; align-items: center; gap: var(--space-2); }
+.ledger-month-label { font-size: 15px; font-weight: 500; color: var(--color-text); min-width: 140px; text-align: center; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+}
+
+@media (min-width: 861px) and (max-width: 1180px) {
+  .ledger-main { padding: var(--space-6) var(--space-6) !important; }
 }
 
 @media (max-width: 860px) {
-      .ledger-shell { flex-direction: column !important; }
-      /* Sidebar becomes a slide-in drawer, closed (off-canvas) by default. */
-      .ledger-sidebar {
-        position: fixed !important; inset: 0 auto 0 0 !important; z-index: 60 !important;
-        width: min(280px, 82vw) !important; height: 100vh !important;
-        background: var(--color-bg) !important;
-        transform: translateX(-100%); transition: transform 0.2s ease;
-        border-right: 1px solid var(--color-divider) !important; border-bottom: none !important;
-        box-shadow: var(--shadow-lg);
-        overflow-y: auto !important;
-      }
-      .ledger-sidebar.is-mobile-open { transform: translateX(0); }
-      .ledger-sidebar-toggle { display: none !important; }
-      .ledger-main { padding: var(--space-4) !important; }
-      .ledger-net-card { padding: var(--space-6) var(--space-4) !important; }
-      .ledger-net-value { font-size: 38px !important; }
-      .ledger-page-title { display: block !important; }
-      .ledger-mobile-nav-toggle { display: flex !important; }
-      .ledger-header { flex-direction: column !important; align-items: stretch !important; }
-      .ledger-header-controls { width: 100% !important; flex-direction: column !important; align-items: stretch !important; }
-      .ledger-month-nav { justify-content: center !important; }
-      .ledger-seg-center { margin: 0 auto !important; }
-    }
+  .ledger-shell { flex-direction: column !important; }
+  .ledger-main { overflow-x: clip; }
+  .ledger-seg-center .seg-opt { flex: 1 1 0; min-width: 0; justify-content: center; padding-inline: 6px; }
+  .ledger-sidebar {
+    position: fixed !important; inset: 0 auto 0 0 !important; z-index: 60 !important;
+    width: min(300px, 84vw) !important; height: 100dvh !important;
+    background: var(--color-bg) !important;
+    transform: translateX(-100%); transition: transform 0.2s ease;
+    border-right: 1px solid var(--color-divider-strong) !important;
+    overflow-y: auto !important;
+  }
+  .ledger-sidebar.is-mobile-open { transform: translateX(0); }
+  .ledger-sidebar-toggle { display: none !important; }
+  .ledger-main { padding: var(--space-6) var(--space-4) !important; }
+  .ledger-page-title {
+    display: block !important; font-size: 20px;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .ledger-mobile-nav-toggle { display: inline-flex !important; }
+  .ledger-header {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas: "title month" "seg seg";
+    align-items: center;
+    column-gap: var(--space-3); row-gap: var(--space-3);
+  }
+  .ledger-header-title { grid-area: title; margin-right: 0; min-width: 0; }
+  .ledger-month-nav { grid-area: month; flex: none; }
+  .ledger-month-label { min-width: 0; font-size: 14px; }
+  .ledger-seg-center { grid-area: seg; display: flex; width: 100%; }
+  .ov-net-fig { font-size: clamp(40px, 13vw, 56px); }
+  .reg-actions { align-self: baseline; }
+}
