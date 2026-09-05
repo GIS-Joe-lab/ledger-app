@@ -10,6 +10,7 @@ export default function MortgageModal({
   homeInsurance, onHomeInsuranceChange,
   floodInsurance, onFloodInsuranceChange,
   propertyTax, onPropertyTaxChange,
+  condoFee, onCondoFeeChange,
   extraPayment, onExtraPaymentChange,
   principalInterest, interestPortion, principalPortion, total, canApply,
   onCancel, onApply,
@@ -34,7 +35,7 @@ export default function MortgageModal({
           <input className="input" type="number" min="0" step="1" value={termYears} onChange={onTermYearsChange} placeholder="30" />
         </div>
 
-        <div style={{ fontSize: 12.5, color: 'var(--color-ink-soft)', marginTop: 4, borderBottom: '1px solid var(--color-divider)', paddingBottom: 6 }}>Escrow (monthly)</div>
+        <div style={{ fontSize: 12.5, color: 'var(--color-ink-soft)', marginTop: 4, borderBottom: '1px solid var(--color-divider)', paddingBottom: 6 }}>Escrow &amp; fees (monthly)</div>
 
         <div className="field">
           <label>Home insurance</label>
@@ -49,6 +50,11 @@ export default function MortgageModal({
         <div className="field">
           <label>Property tax</label>
           <input className="input" type="number" min="0" step="0.01" value={propertyTax} onChange={onPropertyTaxChange} placeholder="0.00" />
+        </div>
+
+        <div className="field">
+          <label>Condo / HOA fee</label>
+          <input className="input" type="number" min="0" step="0.01" value={condoFee} onChange={onCondoFeeChange} placeholder="0.00" />
         </div>
 
         <div className="field">

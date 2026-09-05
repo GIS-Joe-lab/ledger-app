@@ -15,7 +15,7 @@ export function monthlyMortgageTotal(mortgage) {
   // First-payment split: interest = remaining balance × monthly rate (balance = full loan amount before any payment); principal = M - interest.
   const interestPortion = (Number(mortgage.loanAmount) || 0) * monthlyRate;
   const principalPortion = pi > 0 ? pi - interestPortion : 0;
-  const escrow = (Number(mortgage.homeInsurance) || 0) + (Number(mortgage.floodInsurance) || 0) + (Number(mortgage.propertyTax) || 0);
+  const escrow = (Number(mortgage.homeInsurance) || 0) + (Number(mortgage.floodInsurance) || 0) + (Number(mortgage.propertyTax) || 0) + (Number(mortgage.condoFee) || 0);
   const extra = Number(mortgage.extraPayment) || 0;
   return { principalInterest: pi, interestPortion, principalPortion, total: pi + escrow + extra };
 }
