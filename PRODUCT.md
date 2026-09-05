@@ -32,8 +32,8 @@ Combines everyday ledger tracking (categorized income/expense entries with recur
 - Firebase free tier (Spark plan) only — no paid backend services; keep Firestore usage within free-tier limits.
 - Single-user data model by design: Firestore rules scope all data to `users/{uid}`; not built for sharing one ledger across multiple accounts/logins.
 - No bank/API integrations (no Plaid or similar) — all entries are manual.
-- Mortgage calculator currently computes monthly payment (principal, interest, insurance, property tax, extra payment) for a single existing or planned mortgage and applies it as a recurring expense.
-- Planned — second-property acquisition model: a tool to evaluate buying an additional property. Inputs are the purchase price, down payment, and a new mortgage (rate, term, insurance, property tax), offset by expected rental income; the output is the net monthly cost of taking on that property. It reuses the existing mortgage math and, like the current calculator, is meant to feed a recurring expense entry. Detailed field list and UI are not yet fixed.
+- Mortgage calculator computes the monthly payment (principal & interest, home/flood insurance, property tax, condo/HOA fee, extra payment) for an existing or planned mortgage, with a toggle for whether escrow is collected in the payment. It feeds an expense entry's amount, and its inputs + itemised breakdown are shared by the entry dialog and the Property plan page.
+- "Property plan" page (sidebar): model a potential purchase — a house or a condo — with the same mortgage calculator plus an expected-monthly-income (rent) field. Shows the property's standalone monthly balance and a before/after comparison against the current month's totals, both as a household (with a 50/50 split note) and as a single person carrying it alone. The plan is saved to `localStorage` only (not synced to Firestore).
 
 ## Evidence on Hand
 

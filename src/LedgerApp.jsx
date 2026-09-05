@@ -12,6 +12,7 @@ import ExpenseView from './components/ExpenseView.jsx';
 import EntryModal from './components/EntryModal.jsx';
 import BankModal from './components/BankModal.jsx';
 import MortgageModal from './components/MortgageModal.jsx';
+import PropertyView from './components/PropertyView.jsx';
 
 export default class LedgerApp extends React.Component {
   state = (() => {
@@ -260,15 +261,7 @@ export default class LedgerApp extends React.Component {
   onDateChange = (e) => this.setForm('formDate', e.target.value);
   onDescriptionChange = (e) => this.setForm('formDescription', e.target.value);
   onTitleChange = (e) => this.setForm('formTitle', e.target.value);
-  onMortgageLoanAmountChange = (e) => this.setForm('formMortgageLoanAmount', e.target.value);
-  onMortgageInterestRateChange = (e) => this.setForm('formMortgageInterestRate', e.target.value);
-  onMortgageTermYearsChange = (e) => this.setForm('formMortgageTermYears', e.target.value);
-  onMortgageHomeInsuranceChange = (e) => this.setForm('formMortgageHomeInsurance', e.target.value);
-  onMortgageFloodInsuranceChange = (e) => this.setForm('formMortgageFloodInsurance', e.target.value);
-  onMortgagePropertyTaxChange = (e) => this.setForm('formMortgagePropertyTax', e.target.value);
-  onMortgageCondoFeeChange = (e) => this.setForm('formMortgageCondoFee', e.target.value);
-  onMortgageEscrowIncludedChange = (e) => this.setForm('formMortgageEscrowIncluded', e.target.checked);
-  onMortgageExtraPaymentChange = (e) => this.setForm('formMortgageExtraPayment', e.target.value);
+  setMortgageField = (field, value) => this.setState({ ['formMortgage' + field.charAt(0).toUpperCase() + field.slice(1)]: value });
   onNewBankNameChange = (e) => this.setState({ newBankName: e.target.value });
   onBankAccountChange = (e) => {
     const v = e.target.value;
@@ -413,7 +406,7 @@ export default class LedgerApp extends React.Component {
 
         <main className="ledger-main" style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 'var(--space-6)', minWidth: 0 }}>
           <MonthHeader
-            pageTitle={view === 'overview' ? 'Overview' : view === 'income' ? 'Income' : 'Expenses'}
+            pageTitle={view === 'overview' ? 'Overview' : view === 'income' ? 'Income' : view === 'property' ? 'Property plan' : 'Expenses'}
             monthLabel={vm.monthLabel}
             onPrevMonth={() => this.changeMonth(-1)}
             onNextMonth={() => this.changeMonth(1)}
@@ -467,6 +460,15 @@ export default class LedgerApp extends React.Component {
               newId={this.state.lastAddedId}
             />
           )}
+
+          {view === 'property' && (
+            <PropertyView
+              monthLabel={vm.monthLabel}
+              viewFilter={viewFilter}
+              nowIncome={vm.totalIncome}
+              nowExpense={vm.totalExpense}
+            />
+          )}
         </main>
 
         {modalOpen && (
@@ -498,15 +500,13 @@ export default class LedgerApp extends React.Component {
 
         {modalOpen && mortgageModalOpen && (
           <MortgageModal
-            loanAmount={formMortgageLoanAmount} onLoanAmountChange={this.onMortgageLoanAmountChange}
-            interestRate={formMortgageInterestRate} onInterestRateChange={this.onMortgageInterestRateChange}
-            termYears={formMortgageTermYears} onTermYearsChange={this.onMortgageTermYearsChange}
-            homeInsurance={formMortgageHomeInsurance} onHomeInsuranceChange={this.onMortgageHomeInsuranceChange}
-            floodInsurance={formMortgageFloodInsurance} onFloodInsuranceChange={this.onMortgageFloodInsuranceChange}
-            propertyTax={formMortgagePropertyTax} onPropertyTaxChange={this.onMortgagePropertyTaxChange}
-            condoFee={formMortgageCondoFee} onCondoFeeChange={this.onMortgageCondoFeeChange}
-            escrowIncluded={formMortgageEscrowIncluded} onEscrowIncludedChange={this.onMortgageEscrowIncludedChange}
-            extraPayment={formMortgageExtraPayment} onExtraPaymentChange={this.onMortgageExtraPaymentChange}
+            v={{
+              loanAmount: formMortgageLoanAmount, interestRate: formMortgageInterestRate, termYears: formMortgageTermYears,
+              escrowIncluded: formMortgageEscrowIncluded, homeInsurance: formMortgageHomeInsurance,
+              floodInsurance: formMortgageFloodInsurance, propertyTax: formMortgagePropertyTax,
+              condoFee: formMortgageCondoFee, extraPayment: formMortgageExtraPayment,
+            }}
+            set={this.setMortgageField}
             summary={mortgageSummary} canApply={mortgageCanApply}
             onCancel={this.closeMortgageModal} onApply={this.applyMortgage}
           />

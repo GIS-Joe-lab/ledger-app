@@ -1,5 +1,5 @@
 import React from 'react';
-import { GridIcon, IncomeIcon, ExpenseIcon, PlusIcon, PowerIcon, ChevronLeftIcon, ChevronRightIcon } from './icons.jsx';
+import { GridIcon, IncomeIcon, ExpenseIcon, HomeIcon, PlusIcon, PowerIcon, ChevronLeftIcon, ChevronRightIcon } from './icons.jsx';
 
 const navColor = (active) => active ? 'var(--color-text)' : 'var(--color-ink-soft)';
 const navBg = (active) => active ? 'color-mix(in srgb, var(--color-text) 9%, transparent)' : 'transparent';
@@ -61,6 +61,7 @@ export default function Sidebar({ view, onSetView, onAddBank, onSignOut, userEma
         <NavButton collapsed={collapsed} active={view === 'overview'} onClick={() => onSetView('overview')} icon={<GridIcon />}>Overview</NavButton>
         <NavButton collapsed={collapsed} active={view === 'income'} onClick={() => onSetView('income')} icon={<IncomeIcon />}>Income</NavButton>
         <NavButton collapsed={collapsed} active={view === 'expense'} onClick={() => onSetView('expense')} icon={<ExpenseIcon />}>Expenses</NavButton>
+        <NavButton collapsed={collapsed} active={view === 'property'} onClick={() => onSetView('property')} icon={<HomeIcon />}>Property plan</NavButton>
         <div className="hr" style={{ margin: 'var(--space-3) 0' }}></div>
         <button
           title={collapsed ? 'Add bank' : undefined}

@@ -417,6 +417,24 @@ input[type="time"].input {
 
 /* — Income / Expenses list views — */
 .view { display: flex; flex-direction: column; gap: var(--space-6); max-width: 720px; }
+
+/* — Property plan — */
+.prop-intro { margin: 0; font-size: 14.5px; color: var(--color-ink-soft); max-width: 60ch; }
+.prop-form { display: flex; flex-direction: column; gap: var(--space-3); max-width: 440px; }
+.prop-block {
+  display: flex; flex-direction: column;
+  padding: var(--space-4);
+  border: 1px solid var(--color-divider); border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+.prop-block .ov-line { border-bottom: 1px solid var(--color-divider); }
+.prop-block .ov-line:last-of-type { border-bottom: 0; padding-bottom: 0; }
+.prop-sub { font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: 15px; margin: 0 0 var(--space-1); }
+.prop-verdict { margin: 0; font-size: 14px; color: color-mix(in srgb, var(--color-ok) 82%, var(--color-text)); }
+.prop-verdict.is-short { color: var(--color-accent); font-weight: 500; }
+.prop-note { margin: var(--space-2) 0 0; font-size: 12.5px; color: var(--color-ink-soft); }
+.prop-scenarios { display: grid; gap: var(--space-3); }
+@media (min-width: 760px) { .prop-scenarios { grid-template-columns: 1fr 1fr; } }
 .view-breakdown { max-width: 520px; }
 .view-add { align-self: stretch; margin-top: var(--space-2); }
 @media (min-width: 720px) { .view-add { align-self: flex-start; padding-inline: var(--space-6); } }

@@ -87,6 +87,15 @@ export function MenuIcon({ size = 16 }) {
   );
 }
 
+export function HomeIcon({ size = 18 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" {...base} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M4 11.5 12 4l8 7.5"></path>
+      <path d="M6 10.5V19h12v-8.5"></path>
+    </svg>
+  );
+}
+
 export function PowerIcon({ size = 16 }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" {...base} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
