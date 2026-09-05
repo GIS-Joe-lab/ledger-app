@@ -379,6 +379,8 @@ export default class LedgerApp extends React.Component {
       totalExpenseDisplay: fmtMoney(totalExpense),
       netDisplay: (net >= 0 ? '' : '−') + fmtMoney(Math.abs(net)),
       netColor: net >= 0 ? 'var(--color-text)' : 'var(--color-accent)',
+      accountSafe: net >= 0,
+      shortfallDisplay: fmtMoney(Math.max(0, totalExpense - totalIncome)),
       fixedCosts, readingSentence,
       incomeEmpty: incomeEntries.length === 0,
       incomeHasRows: incomeEntries.length > 0,
@@ -429,6 +431,8 @@ export default class LedgerApp extends React.Component {
               netDisplay={vm.netDisplay}
               netColor={vm.netColor}
               overallHasData={vm.overallHasData}
+              accountSafe={vm.accountSafe}
+              shortfallDisplay={vm.shortfallDisplay}
               expenseBreakdown={vm.expenseBreakdown}
               fixedCosts={vm.fixedCosts}
               readingSentence={vm.readingSentence}

@@ -4,7 +4,7 @@ import { PlusIcon } from './icons.jsx';
 
 export default function OverviewView({
   monthLabel, totalIncomeDisplay, totalExpenseDisplay, netDisplay, netColor,
-  overallHasData, expenseBreakdown, fixedCosts, readingSentence,
+  overallHasData, accountSafe, shortfallDisplay, expenseBreakdown, fixedCosts, readingSentence,
   onDrillCategory, onAddIncome, onAddExpense,
 }) {
   const hasWhere = overallHasData && expenseBreakdown.length > 0;
@@ -12,6 +12,16 @@ export default function OverviewView({
   return (
     <div className="ov">
       <section className="ov-ledger">
+        {overallHasData && (
+          <div className={'ov-status' + (accountSafe ? ' is-safe' : ' is-short')} role="status">
+            <span className="ov-status-dot" aria-hidden="true" />
+            <span>
+              {accountSafe
+                ? 'Account is safe — this month’s income covers spending.'
+                : `Shortage — spending is ${shortfallDisplay} over what came in this month.`}
+            </span>
+          </div>
+        )}
         <div className="ov-line">
           <span>Money in</span>
           <span className="fig">{totalIncomeDisplay}</span>

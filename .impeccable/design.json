@@ -13,6 +13,7 @@
       "vermilion-hover": { "role": "secondary", "displayName": "Vermilion Hover", "canonical": "#883a26", "tonalRamp": ["#26110b", "#3d1a11", "#552418", "#6e2f1f", "#883a26", "#a95d47", "#cb9382", "#e9c9bf"] },
       "vermilion-soft": { "role": "secondary", "displayName": "Vermilion Soft", "canonical": "#b26a52", "tonalRamp": ["#33190f", "#4f271a", "#6b3626", "#8a4a37", "#b26a52", "#c68d79", "#dcb5a7", "#f0ddd4"] },
       "danger": { "role": "secondary", "displayName": "Danger Oxide", "canonical": "#99271b", "tonalRamp": ["#2a0b07", "#450f0a", "#61150d", "#7d1f14", "#99271b", "#bd5344", "#d98d81", "#f0c8c1"] },
+      "ok": { "role": "secondary", "displayName": "Status OK Green", "canonical": "#3f7a55", "tonalRamp": ["#122117", "#1e3626", "#2b4c35", "#3f7a55", "#5c9772", "#84b294", "#b0cdba", "#dce8e0"] },
       "divider": { "role": "neutral", "displayName": "Baseline Hairline", "canonical": "#dcd6c4", "tonalRamp": ["#2e2b21", "#474334", "#615c48", "#7d775f", "#9b9479", "#bab399", "#d0c9b3", "#dcd6c4"] },
       "divider-strong": { "role": "neutral", "displayName": "Strong Divider", "canonical": "#c4bca6", "tonalRamp": ["#2a2820", "#413d30", "#5a5443", "#766f58", "#948c72", "#b0a88e", "#c4bca6", "#e3ddce"] },
       "cat-brown": { "role": "tertiary", "displayName": "Brown (Mortgage)", "canonical": "#7a4a30", "tonalRamp": ["#26170e", "#3b2417", "#513220", "#7a4a30", "#9a6448", "#b98467", "#d4a992", "#ebd4c5"] }

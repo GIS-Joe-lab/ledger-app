@@ -20,6 +20,7 @@
   --color-accent-hover: #883a26;
   --color-accent-soft: #b26a52; /* vermilion for larger / decorative use */
   --color-danger: #99271b;
+  --color-ok: #3f7a55;      /* status only — "account is safe" (counterpart to danger) */
 
   --color-divider: #dcd6c4;     /* baseline hairline on paper */
   --color-divider-strong: #c4bca6;
@@ -359,6 +360,16 @@ input[type="time"].input {
   }
 }
 .ov-ledger { display: flex; flex-direction: column; gap: var(--space-2); }
+.ov-status {
+  display: flex; align-items: flex-start; gap: 9px;
+  font-size: 13.5px; line-height: 1.4; color: var(--color-ink-soft);
+  padding-bottom: var(--space-3); margin-bottom: var(--space-1);
+  border-bottom: 1px solid var(--color-divider);
+}
+.ov-status-dot { width: 9px; height: 9px; border-radius: 50%; flex: none; margin-top: 4px; background: var(--color-ok); }
+.ov-status.is-safe { color: color-mix(in srgb, var(--color-ok) 82%, var(--color-text)); }
+.ov-status.is-short { color: var(--color-accent); font-weight: 500; }
+.ov-status.is-short .ov-status-dot { background: var(--color-accent); }
 .ov-line {
   display: flex; justify-content: space-between; align-items: baseline;
   padding: 7px 0; border-bottom: 1px solid var(--color-divider);

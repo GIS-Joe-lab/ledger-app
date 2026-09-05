@@ -11,6 +11,7 @@ colors:
   vermilion-hover: "#883a26"
   vermilion-soft: "#b26a52"
   danger: "#99271b"
+  ok: "#3f7a55"
   divider: "#dcd6c4"
   divider-strong: "#c4bca6"
   cat-blue: "#3663b3"
@@ -174,6 +175,7 @@ A two-ink letterpress palette on warm paper: structural indigo, a single reserve
 - **Vermilion** (`#9e4630`): The reserved second ink. Money out / negatives / key marks only: the "Money out" figure, the outflow line, links, the "Add bank" action, caret, focus ring, `::selection` tint, hover wash on icon actions. Never a category colour, never a fill behind body text. Budgeted at roughly 15% of any surface.
 - **Vermilion Hover** (`#883a26`) / **Vermilion Soft** (`#b26a52`): Hover state for links/accent; the soft tint is for larger or decorative vermilion use.
 - **Danger** (`#99271b`): Destructive confirmation text/affordances only; distinct from the everyday vermilion.
+- **Status OK** (`#3f7a55`): A muted forest green, status only — the "Account is safe" line on Overview (its shortage counterpart uses the reserved vermilion). The one green in the system; never used for anything but that safe/on-track signal.
 
 ### Neutral
 - **Recycled-Paper Ground** (`#f4f1e8`): Every surface — app shell, sidebar, main column, dialogs, primary-button text colour. There is no lighter background.
