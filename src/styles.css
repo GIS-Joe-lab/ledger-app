@@ -170,6 +170,24 @@ select.input { appearance: none; -webkit-appearance: none;
 }
 textarea.input { min-height: 90px; resize: vertical; }
 
+/* Native date/time inputs carry a non-shrinkable intrinsic width on iOS
+   Safari (the centered ::-webkit-date-and-time-value inner element), so the
+   field overflows a narrow dialog on a real phone even though it looks fine
+   in desktop responsive mode. Strip the platform chrome, left-align the
+   value, and pin the box to its container. */
+input[type="date"].input,
+input[type="datetime-local"].input,
+input[type="time"].input {
+  -webkit-appearance: none;
+  appearance: none;
+  min-width: 0;
+  max-width: 100%;
+}
+.input::-webkit-date-and-time-value { text-align: left; min-width: 0; margin: 0; }
+.input::-webkit-datetime-edit { padding: 0; }
+.input::-webkit-datetime-edit-fields-wrapper { padding: 0; }
+.input::-webkit-calendar-picker-indicator { margin-inline-start: auto; }
+
 .radio { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font-size: 15px; }
 .radio input, .seg-opt input {
   position: absolute; opacity: 0; width: 0; height: 0; pointer-events: none;
@@ -280,10 +298,14 @@ textarea.input { min-height: 90px; resize: vertical; }
 }
 .dialog {
   width: min(440px, 100%); display: flex; flex-direction: column; gap: var(--space-3);
-  max-height: calc(100vh - var(--space-6));
-  overflow-y: auto;
+  max-height: calc(100dvh - var(--space-6));
+  overflow-y: auto; overflow-x: clip;
   padding: var(--space-6); border-radius: var(--radius-lg);
   background: var(--color-bg); border: 1px solid var(--color-text);
+}
+@media (max-width: 420px) {
+  .dialog-backdrop { padding: var(--space-2); }
+  .dialog { padding: var(--space-4); }
 }
 .dialog-title { font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: 22px; }
 .dialog-body { font-size: 15px; color: var(--color-ink-soft); }
