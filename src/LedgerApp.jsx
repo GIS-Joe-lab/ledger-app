@@ -404,12 +404,12 @@ export default class LedgerApp extends React.Component {
     const mortgageCanApply = parseFloat(formMortgageLoanAmount) > 0 && parseFloat(formMortgageInterestRate) >= 0 && parseFloat(formMortgageTermYears) > 0;
 
     return (
-      <div className="ledger-shell" style={{ display: 'flex', flexDirection: 'row', minHeight: '100vh', background: 'var(--color-bg)', color: 'var(--color-text)', fontFamily: 'var(--font-body)' }}>
+      <div className="ledger-shell" style={{ display: 'flex', flexDirection: 'row', minHeight: '100dvh', background: 'var(--color-bg)', color: 'var(--color-text)', fontFamily: 'var(--font-body)' }}>
         <Sidebar view={view} onSetView={this.setView} onAddBank={this.openAddBank} onSignOut={onSignOut} userEmail={userEmail} collapsed={sidebarCollapsed} onToggleCollapsed={this.toggleSidebar} mobileOpen={mobileNavOpen} />
 
         {mobileNavOpen && <div className="ledger-mobile-backdrop" onClick={this.closeMobileNav} />}
 
-        <main className="ledger-main" style={{ flex: 1, padding: 'var(--space-8) var(--space-8)', display: 'flex', flexDirection: 'column', gap: 'var(--space-6)', minWidth: 0 }}>
+        <main className="ledger-main" style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 'var(--space-6)', minWidth: 0 }}>
           <MonthHeader
             pageTitle={view === 'overview' ? 'Overview' : view === 'income' ? 'Income' : 'Expenses'}
             monthLabel={vm.monthLabel}
