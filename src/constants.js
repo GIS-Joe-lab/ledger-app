@@ -5,35 +5,35 @@ export const STORAGE_KEY = 'nocturne-ledger-entries-v1';
 export const BANK_STORAGE_KEY = 'nocturne-ledger-banks-v1';
 export const FREQUENCIES = ['One-time', 'Weekly', 'Bi-weekly', 'Monthly', 'Bi-monthly', 'Quarterly', 'Yearly'];
 
-/* Muted printer's inks that sit on the paper ground — used only as a small
-   swatch or ring segment, never as a fill behind text. Each is mid-value
-   (L ~40–55%) and low-chroma so no two fight on the page; `text` is the
-   paper tone for the rare case a swatch carries a label. */
+/* A distinct categorical set — hues spread around the wheel at mid value and
+   moderate chroma, so any two read apart at a 9-10px swatch or a bar segment
+   while still sitting on the paper ground. Only ever shown as a small mark,
+   never as a fill behind text. `text` is the paper tone for the rare label. */
 export const PALETTE = {
-  indigo:     { bg: '#3f4d70', text: '#f4f1e8' },
-  pine:       { bg: '#3f5c4a', text: '#f4f1e8' },
-  ochre:      { bg: '#8a6d3c', text: '#f4f1e8' },
-  plum:       { bg: '#6b4b63', text: '#f4f1e8' },
-  rose:       { bg: '#8a5750', text: '#f4f1e8' },
-  warmgray:   { bg: '#726a58', text: '#f4f1e8' },
-  walnut:     { bg: '#6f4a37', text: '#f4f1e8' },
-  teal:       { bg: '#3d6066', text: '#f4f1e8' },
-  olive:      { bg: '#6b6a3c', text: '#f4f1e8' },
-  steel:      { bg: '#4a5a72', text: '#f4f1e8' },
-  terracotta: { bg: '#9a5a44', text: '#f4f1e8' },
-  sea:        { bg: '#3f6b63', text: '#f4f1e8' },
-  rust:       { bg: '#8a5636', text: '#f4f1e8' },
-  bluegray:   { bg: '#556884', text: '#f4f1e8' },
-  moss:       { bg: '#5c6b47', text: '#f4f1e8' },
-  fern:       { bg: '#4f6b4e', text: '#f4f1e8' },
-  plainOrange:{ bg: '#8a5636', text: '#f4f1e8' },
+  blue:       { bg: '#3663b3', text: '#f4f1e8' },
+  teal:       { bg: '#2f8f8c', text: '#f4f1e8' },
+  green:      { bg: '#3f9b4e', text: '#f4f1e8' },
+  olive:      { bg: '#94a033', text: '#20240c' },
+  pink:       { bg: '#c5518f', text: '#f4f1e8' },
+  warmgray:   { bg: '#8a8072', text: '#f4f1e8' },
+  brown:      { bg: '#7a4a30', text: '#f4f1e8' },
+  sky:        { bg: '#3a9ac9', text: '#12242e' },
+  gold:       { bg: '#c39320', text: '#221c07' },
+  indigoblue: { bg: '#6a5bbe', text: '#f4f1e8' },
+  coral:      { bg: '#d85c47', text: '#f4f1e8' },
+  emerald:    { bg: '#2c9d7a', text: '#f4f1e8' },
+  purple:     { bg: '#9a4fae', text: '#f4f1e8' },
+  navy:       { bg: '#2d4c84', text: '#f4f1e8' },
+  moss:       { bg: '#6f9a3c', text: '#171e0c' },
+  sage:       { bg: '#4a8f6b', text: '#f4f1e8' },
+  plainOrange:{ bg: '#c17a2e', text: '#241708' },
 };
 
 export const CATEGORY_COLORS = {
-  Salary: PALETTE.indigo, Freelance: PALETTE.pine, Investment: PALETTE.ochre,
-  Rental: PALETTE.plum, Gift: PALETTE.rose, Other: PALETTE.warmgray,
-  Mortgage: PALETTE.walnut,
-  Utilities: PALETTE.teal, Groceries: PALETTE.olive, Transport: PALETTE.steel, Entertainment: PALETTE.terracotta,
-  Health: PALETTE.sea, Shopping: PALETTE.rust, 'Car Insurance': PALETTE.bluegray, 'Mobile Plan': PALETTE.moss,
-  Landscaping: PALETTE.fern,
+  Salary: PALETTE.blue, Freelance: PALETTE.teal, Investment: PALETTE.green,
+  Rental: PALETTE.olive, Gift: PALETTE.pink, Other: PALETTE.warmgray,
+  Mortgage: PALETTE.brown,
+  Utilities: PALETTE.sky, Groceries: PALETTE.gold, Transport: PALETTE.indigoblue, Entertainment: PALETTE.coral,
+  Health: PALETTE.emerald, Shopping: PALETTE.purple, 'Car Insurance': PALETTE.navy, 'Mobile Plan': PALETTE.moss,
+  Landscaping: PALETTE.sage,
 };

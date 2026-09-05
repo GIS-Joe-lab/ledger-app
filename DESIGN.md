@@ -13,22 +13,22 @@ colors:
   danger: "#99271b"
   divider: "#dcd6c4"
   divider-strong: "#c4bca6"
-  cat-indigo: "#3f4d70"
-  cat-pine: "#3f5c4a"
-  cat-ochre: "#8a6d3c"
-  cat-plum: "#6b4b63"
-  cat-rose: "#8a5750"
-  cat-warmgray: "#726a58"
-  cat-walnut: "#6f4a37"
-  cat-teal: "#3d6066"
-  cat-olive: "#6b6a3c"
-  cat-steel: "#4a5a72"
-  cat-terracotta: "#9a5a44"
-  cat-sea: "#3f6b63"
-  cat-rust: "#8a5636"
-  cat-bluegray: "#556884"
-  cat-moss: "#5c6b47"
-  cat-fern: "#4f6b4e"
+  cat-blue: "#3663b3"
+  cat-teal: "#2f8f8c"
+  cat-green: "#3f9b4e"
+  cat-olive: "#94a033"
+  cat-pink: "#c5518f"
+  cat-warmgray: "#8a8072"
+  cat-brown: "#7a4a30"
+  cat-sky: "#3a9ac9"
+  cat-gold: "#c39320"
+  cat-indigoblue: "#6a5bbe"
+  cat-coral: "#d85c47"
+  cat-emerald: "#2c9d7a"
+  cat-purple: "#9a4fae"
+  cat-navy: "#2d4c84"
+  cat-moss: "#6f9a3c"
+  cat-sage: "#4a8f6b"
 typography:
   display:
     fontFamily: "Spectral, Georgia, \"Times New Roman\", serif"
@@ -151,7 +151,7 @@ Ledger is a Japanese household account book (kakeibo) set in Western letterpress
 
 Density is generous and typographic. Content columns are narrow (Overview caps near 780px single-column, 1160px for the two-column spread; list views cap at 720px). Whitespace between sections is wide (the 34px top step), whitespace within a ledger block is tight (7–12px between ruled lines). Money is always tabular so columns of figures align to the digit. The serif (Spectral) carries headings, section titles, the ledger tallies and the net figure; the grotesque (Hanken Grotesk) carries every piece of UI chrome — nav, buttons, inputs, meta lines.
 
-The system explicitly refuses the fintech dashboard: no elevated cards on white, no hero donut or ring chart (a flat proportion ruler replaced it everywhere), no saturated "candy" category chips. Category identity is carried only by a 9–10px muted-ink swatch, never a fill behind text. Motion is almost absent: exactly one authored moment (a new register line ruling its hairline in), and totals deliberately never count up.
+The system explicitly refuses the fintech dashboard: no elevated cards on white, no hero donut or ring chart (a flat proportion ruler replaced it everywhere), no category colour used as a chip or fill. Category identity is carried only by a 9–10px swatch — a distinct set of hues spread around the wheel so any two read apart at that size, mid-value so they still sit on the paper. Motion is almost absent: exactly one authored moment (a new register line ruling its hairline in), and totals deliberately never count up.
 
 **Key Characteristics:**
 - Warm recycled-paper ground (#f4f1e8) on every surface; no white anywhere
@@ -165,7 +165,7 @@ The system explicitly refuses the fintech dashboard: no elevated cards on white,
 
 ## Colors
 
-A two-ink letterpress palette on warm paper: structural indigo, a single reserved vermilion, graphite for secondary text, and a 16-strong set of muted printer's inks used only as tiny category swatches.
+A two-ink letterpress palette on warm paper: structural indigo, a single reserved vermilion, graphite for secondary text, and a 16-strong categorical set — hues spread around the wheel — used only as tiny category swatches.
 
 ### Primary
 - **Indigo Ink** (`#2e3a54`): The structural ink. All primary text, headings, the net figure, primary-button fill, input text, active nav label. This is the "black" of the system — everything load-bearing is indigo, not neutral gray.
@@ -184,7 +184,7 @@ A two-ink letterpress palette on warm paper: structural indigo, a single reserve
 - **Divider Strong** (`#c4bca6`): Heavier 1px strokes — input/button/segmented borders, the proportion ruler's backing, scrollbar thumb, table header underline.
 
 ### Category Inks
-Sixteen mid-value (L ~40–55%), low-chroma printer's inks, keyed to categories in `src/constants.js` (`PALETTE` / `CATEGORY_COLORS`). Used **only** as a 9–10px rounded swatch or as a segment of the proportion ruler — never as a fill behind text, never as a chip background. Representative members: `cat-indigo #3f4d70`, `cat-pine #3f5c4a`, `cat-ochre #8a6d3c`, `cat-plum #6b4b63`, `cat-teal #3d6066`, `cat-steel #4a5a72`, `cat-terracotta #9a5a44`, `cat-fern #4f6b4e`. **Mortgage = `cat-walnut #6f4a37`**, chosen to sit clearly apart from the reserved vermilion so the largest fixed cost never reads as an alert.
+Sixteen mid-value hues (L ~50–65%, moderate chroma) spread around the wheel so any two are told apart at swatch size, keyed to categories in `src/constants.js` (`PALETTE` / `CATEGORY_COLORS`). Used **only** as a 9–10px rounded swatch or as a segment of the proportion ruler — never as a fill behind text, never as a chip background. Members: `cat-blue #3663b3`, `cat-teal #2f8f8c`, `cat-green #3f9b4e`, `cat-olive #94a033`, `cat-pink #c5518f`, `cat-warmgray #8a8072`, `cat-brown #7a4a30`, `cat-sky #3a9ac9`, `cat-gold #c39320`, `cat-indigoblue #6a5bbe`, `cat-coral #d85c47`, `cat-emerald #2c9d7a`, `cat-purple #9a4fae`, `cat-navy #2d4c84`, `cat-moss #6f9a3c`, `cat-sage #4a8f6b`. **Mortgage = `cat-brown #7a4a30`**, a deep brown kept clear of the reserved vermilion so the largest fixed cost never reads as an alert.
 
 ### Named Rules
 **The Reserved-Ink Rule.** Vermilion (`#9e4630`) means one thing: money leaving, a negative, or a key mark. It never fills a shape behind text and never identifies a category. If more than ~15% of a screen is vermilion, something non-outflow has borrowed the ink — take it back.
