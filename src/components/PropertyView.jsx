@@ -6,7 +6,7 @@ import { fmtMoney } from '../utils/format.js';
 
 const STORE = 'nocturne-ledger-property-v1';
 const BLANK = {
-  loanAmount: '', interestRate: '', termYears: '', escrowIncluded: true,
+  loanAmount: '', interestRate: '', termYears: '30', escrowIncluded: true,
   homeInsurance: '', floodInsurance: '', propertyTax: '', condoFee: '',
   extraPayment: '', rentIncome: '',
 };

@@ -48,7 +48,7 @@ export default class LedgerApp extends React.Component {
       mortgageModalOpen: false,
       formMortgageLoanAmount: '',
       formMortgageInterestRate: '',
-      formMortgageTermYears: '',
+      formMortgageTermYears: '30',
       formMortgageHomeInsurance: '',
       formMortgageFloodInsurance: '',
       formMortgagePropertyTax: '',
@@ -137,7 +137,7 @@ export default class LedgerApp extends React.Component {
       formBankAccount: this.state.bankAccounts[0] || '',
       formEarner: 'Me',
       formAutoPay: false, formAutoPayDate: '',
-      formMortgageLoanAmount: '', formMortgageInterestRate: '', formMortgageTermYears: '',
+      formMortgageLoanAmount: '', formMortgageInterestRate: '', formMortgageTermYears: '30',
       formMortgageHomeInsurance: '', formMortgageFloodInsurance: '', formMortgagePropertyTax: '', formMortgageCondoFee: '', formMortgageEscrowIncluded: true, formMortgageExtraPayment: '',
     });
   }
@@ -155,7 +155,7 @@ export default class LedgerApp extends React.Component {
       formAutoPay: entry.autoPay || false, formAutoPayDate: entry.autoPayDate || '',
       formMortgageLoanAmount: entry.mortgage ? String(m.loanAmount) : '',
       formMortgageInterestRate: entry.mortgage ? String(m.interestRate) : '',
-      formMortgageTermYears: entry.mortgage ? String(m.termYears) : '',
+      formMortgageTermYears: entry.mortgage ? String(m.termYears) : '30',
       formMortgageHomeInsurance: entry.mortgage ? String(m.homeInsurance) : '',
       formMortgageFloodInsurance: entry.mortgage ? String(m.floodInsurance) : '',
       formMortgagePropertyTax: entry.mortgage ? String(m.propertyTax) : '',
