@@ -15,7 +15,29 @@ export function monthlyMortgageTotal(mortgage) {
   // First-payment split: interest = remaining balance × monthly rate (balance = full loan amount before any payment); principal = M - interest.
   const interestPortion = (Number(mortgage.loanAmount) || 0) * monthlyRate;
   const principalPortion = pi > 0 ? pi - interestPortion : 0;
-  const escrow = (Number(mortgage.homeInsurance) || 0) + (Number(mortgage.floodInsurance) || 0) + (Number(mortgage.propertyTax) || 0) + (Number(mortgage.condoFee) || 0);
-  const extra = Number(mortgage.extraPayment) || 0;
-  return { principalInterest: pi, interestPortion, principalPortion, total: pi + escrow + extra };
+
+  // Escrow & fees only count toward the payment when the lender collects them
+  // (escrowIncluded). Undefined means an entry made before this option existed,
+  // which was always computed with escrow — so treat that as included.
+  const escrowIncluded = mortgage.escrowIncluded !== false;
+  const homeInsurance = escrowIncluded ? (Number(mortgage.homeInsurance) || 0) : 0;
+  const floodInsurance = escrowIncluded ? (Number(mortgage.floodInsurance) || 0) : 0;
+  const propertyTax = escrowIncluded ? (Number(mortgage.propertyTax) || 0) : 0;
+  const condoFee = escrowIncluded ? (Number(mortgage.condoFee) || 0) : 0;
+  const escrow = homeInsurance + floodInsurance + propertyTax + condoFee;
+  const extraPayment = Number(mortgage.extraPayment) || 0;
+
+  return {
+    principalInterest: pi,
+    interestPortion,
+    principalPortion,
+    escrowIncluded,
+    homeInsurance,
+    floodInsurance,
+    propertyTax,
+    condoFee,
+    escrow,
+    extraPayment,
+    total: pi + escrow + extraPayment,
+  };
 }

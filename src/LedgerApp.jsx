@@ -52,6 +52,7 @@ export default class LedgerApp extends React.Component {
       formMortgageFloodInsurance: '',
       formMortgagePropertyTax: '',
       formMortgageCondoFee: '',
+      formMortgageEscrowIncluded: true,
       formMortgageExtraPayment: '',
     };
   })();
@@ -136,7 +137,7 @@ export default class LedgerApp extends React.Component {
       formEarner: 'Me',
       formAutoPay: false, formAutoPayDate: '',
       formMortgageLoanAmount: '', formMortgageInterestRate: '', formMortgageTermYears: '',
-      formMortgageHomeInsurance: '', formMortgageFloodInsurance: '', formMortgagePropertyTax: '', formMortgageCondoFee: '', formMortgageExtraPayment: '',
+      formMortgageHomeInsurance: '', formMortgageFloodInsurance: '', formMortgagePropertyTax: '', formMortgageCondoFee: '', formMortgageEscrowIncluded: true, formMortgageExtraPayment: '',
     });
   }
 
@@ -158,6 +159,7 @@ export default class LedgerApp extends React.Component {
       formMortgageFloodInsurance: entry.mortgage ? String(m.floodInsurance) : '',
       formMortgagePropertyTax: entry.mortgage ? String(m.propertyTax) : '',
       formMortgageCondoFee: entry.mortgage ? String(m.condoFee || '') : '',
+      formMortgageEscrowIncluded: entry.mortgage ? (m.escrowIncluded !== false) : true,
       formMortgageExtraPayment: entry.mortgage ? String(m.extraPayment) : '',
     });
   }
@@ -172,7 +174,7 @@ export default class LedgerApp extends React.Component {
   closeMortgageModal = () => this.setState({ mortgageModalOpen: false });
 
   getMortgageDraft() {
-    const { formMortgageLoanAmount, formMortgageInterestRate, formMortgageTermYears, formMortgageHomeInsurance, formMortgageFloodInsurance, formMortgagePropertyTax, formMortgageCondoFee, formMortgageExtraPayment } = this.state;
+    const { formMortgageLoanAmount, formMortgageInterestRate, formMortgageTermYears, formMortgageHomeInsurance, formMortgageFloodInsurance, formMortgagePropertyTax, formMortgageCondoFee, formMortgageEscrowIncluded, formMortgageExtraPayment } = this.state;
     return {
       loanAmount: parseFloat(formMortgageLoanAmount) || 0,
       interestRate: parseFloat(formMortgageInterestRate) || 0,
@@ -181,6 +183,7 @@ export default class LedgerApp extends React.Component {
       floodInsurance: parseFloat(formMortgageFloodInsurance) || 0,
       propertyTax: parseFloat(formMortgagePropertyTax) || 0,
       condoFee: parseFloat(formMortgageCondoFee) || 0,
+      escrowIncluded: formMortgageEscrowIncluded,
       extraPayment: parseFloat(formMortgageExtraPayment) || 0,
     };
   }
@@ -264,6 +267,7 @@ export default class LedgerApp extends React.Component {
   onMortgageFloodInsuranceChange = (e) => this.setForm('formMortgageFloodInsurance', e.target.value);
   onMortgagePropertyTaxChange = (e) => this.setForm('formMortgagePropertyTax', e.target.value);
   onMortgageCondoFeeChange = (e) => this.setForm('formMortgageCondoFee', e.target.value);
+  onMortgageEscrowIncludedChange = (e) => this.setForm('formMortgageEscrowIncluded', e.target.checked);
   onMortgageExtraPaymentChange = (e) => this.setForm('formMortgageExtraPayment', e.target.value);
   onNewBankNameChange = (e) => this.setState({ newBankName: e.target.value });
   onBankAccountChange = (e) => {
@@ -390,13 +394,13 @@ export default class LedgerApp extends React.Component {
       formTitle, formAmount, formDate, formCategory, formDescription, formFrequency, formOngoing, formEndDate, formBankAccount, formEarner,
       formAutoPay, formAutoPayDate, mortgageModalOpen,
       formMortgageLoanAmount, formMortgageInterestRate, formMortgageTermYears,
-      formMortgageHomeInsurance, formMortgageFloodInsurance, formMortgagePropertyTax, formMortgageCondoFee, formMortgageExtraPayment } = this.state;
+      formMortgageHomeInsurance, formMortgageFloodInsurance, formMortgagePropertyTax, formMortgageCondoFee, formMortgageEscrowIncluded, formMortgageExtraPayment } = this.state;
     const vm = this.computeViewModel();
     const { onSignOut, userEmail } = this.props;
 
     const bankTagList = bankAccounts.map(b => ({ name: b, onRemove: () => this.removeBank(b) }));
     const isMortgageCategory = modalType === 'expense' && this.isMortgageCategory(formCategory);
-    const { principalInterest: mortgagePI, interestPortion: mortgageInterestPortion, principalPortion: mortgagePrincipalPortion, total: mortgageTotal } = monthlyMortgageTotal(this.getMortgageDraft());
+    const mortgageSummary = monthlyMortgageTotal(this.getMortgageDraft());
     const mortgageCanApply = parseFloat(formMortgageLoanAmount) > 0 && parseFloat(formMortgageInterestRate) >= 0 && parseFloat(formMortgageTermYears) > 0;
 
     return (
@@ -497,8 +501,9 @@ export default class LedgerApp extends React.Component {
             floodInsurance={formMortgageFloodInsurance} onFloodInsuranceChange={this.onMortgageFloodInsuranceChange}
             propertyTax={formMortgagePropertyTax} onPropertyTaxChange={this.onMortgagePropertyTaxChange}
             condoFee={formMortgageCondoFee} onCondoFeeChange={this.onMortgageCondoFeeChange}
+            escrowIncluded={formMortgageEscrowIncluded} onEscrowIncludedChange={this.onMortgageEscrowIncludedChange}
             extraPayment={formMortgageExtraPayment} onExtraPaymentChange={this.onMortgageExtraPaymentChange}
-            principalInterest={mortgagePI} interestPortion={mortgageInterestPortion} principalPortion={mortgagePrincipalPortion} total={mortgageTotal} canApply={mortgageCanApply}
+            summary={mortgageSummary} canApply={mortgageCanApply}
             onCancel={this.closeMortgageModal} onApply={this.applyMortgage}
           />
         )}
