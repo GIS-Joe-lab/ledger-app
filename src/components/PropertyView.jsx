@@ -7,7 +7,7 @@ import { fmtMoney } from '../utils/format.js';
 const STORE = 'nocturne-ledger-property-v1';
 const BLANK = {
   loanAmount: '', interestRate: '', termYears: '30', escrowIncluded: true,
-  homeInsurance: '', floodInsurance: '', propertyTax: '', condoFee: '',
+  homeInsurance: '', floodInsurance: '', propertyTax: '', propertyTaxPeriod: 'year', condoFee: '',
   extraPayment: '', rentIncome: '',
 };
 
@@ -39,6 +39,7 @@ export default class PropertyView extends React.Component {
       homeInsurance: parseFloat(s.homeInsurance) || 0,
       floodInsurance: parseFloat(s.floodInsurance) || 0,
       propertyTax: parseFloat(s.propertyTax) || 0,
+      propertyTaxPeriod: s.propertyTaxPeriod,
       condoFee: parseFloat(s.condoFee) || 0,
       extraPayment: parseFloat(s.extraPayment) || 0,
     };

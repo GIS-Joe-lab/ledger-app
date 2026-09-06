@@ -1,4 +1,5 @@
 import React from 'react';
+import { fmtMoney } from '../utils/format.js';
 
 /**
  * The mortgage-calculator inputs, shared by the entry dialog and the
@@ -12,6 +13,9 @@ export default function MortgageFields({ v, set }) {
       value={v[field]} onChange={(e) => set(field, e.target.value)} placeholder={opts.ph || '0.00'}
     />
   );
+
+  const taxPeriod = v.propertyTaxPeriod === 'month' ? 'month' : 'year';
+  const taxInput = Number(v.propertyTax) || 0;
 
   return (
     <>
@@ -34,7 +38,35 @@ export default function MortgageFields({ v, set }) {
         <>
           <div className="field"><label>Home insurance</label>{num('homeInsurance')}</div>
           <div className="field"><label>Flood insurance</label>{num('floodInsurance')}</div>
-          <div className="field"><label>Property tax</label>{num('propertyTax')}</div>
+
+          <div className="field">
+            <label>Property tax</label>
+            <div className="field-inline">
+              <div className="seg" role="group" aria-label="Property tax period">
+                <label className="seg-opt">
+                  <input
+                    type="radio" checked={taxPeriod === 'year'}
+                    onChange={() => set('propertyTaxPeriod', 'year')}
+                  />
+                  Yearly
+                </label>
+                <label className="seg-opt">
+                  <input
+                    type="radio" checked={taxPeriod === 'month'}
+                    onChange={() => set('propertyTaxPeriod', 'month')}
+                  />
+                  Monthly
+                </label>
+              </div>
+              {num('propertyTax', { ph: taxPeriod === 'year' ? 'amount per year' : 'amount per month' })}
+            </div>
+            {taxPeriod === 'year' && taxInput > 0 && (
+              <div className="field-hint">
+                {fmtMoney(taxInput)} / yr &divide; 12 &asymp; <strong>{fmtMoney(taxInput / 12)} / mo</strong> goes into the payment
+              </div>
+            )}
+          </div>
+
           <div className="field"><label>Condo / HOA fee</label>{num('condoFee')}</div>
         </>
       )}

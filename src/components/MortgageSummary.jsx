@@ -22,20 +22,23 @@ const line = (label, value, opts = {}) => (
 
 /** The itemised monthly-payment breakdown, from monthlyMortgageTotal(). */
 export default function MortgageSummary({ summary }) {
-  const feeRows = [
-    ['Home insurance', summary.homeInsurance],
-    ['Flood insurance', summary.floodInsurance],
-    ['Property tax', summary.propertyTax],
-    ['Condo / HOA fee', summary.condoFee],
-    ['Extra payment', summary.extraPayment],
-  ].filter(([, v]) => v > 0);
+  const taxYearly = summary.propertyTaxPeriod === 'year';
 
   return (
     <div className="card tnum" style={{ gap: 6 }}>
       {line('Principal & interest', fmtMoney(summary.principalInterest) + '/mo')}
       {line('— interest (first payment)', fmtMoney(summary.interestPortion), { size: 12, indent: true })}
       {line('— principal (first payment)', fmtMoney(summary.principalPortion), { size: 12, indent: true })}
-      {feeRows.map(([label, v]) => line(label, fmtMoney(v)))}
+      {summary.homeInsurance > 0 && line('Home insurance', fmtMoney(summary.homeInsurance))}
+      {summary.floodInsurance > 0 && line('Flood insurance', fmtMoney(summary.floodInsurance))}
+      {summary.propertyTax > 0 && line(
+        taxYearly ? 'Property tax (yearly ÷ 12)' : 'Property tax (monthly)',
+        fmtMoney(summary.propertyTax) + '/mo',
+      )}
+      {summary.propertyTax > 0 && taxYearly &&
+        line('— entered as ' + fmtMoney(summary.propertyTaxAnnual) + '/yr', '', { size: 12, indent: true })}
+      {summary.condoFee > 0 && line('Condo / HOA fee', fmtMoney(summary.condoFee))}
+      {summary.extraPayment > 0 && line('Extra payment', fmtMoney(summary.extraPayment))}
       {line('Total monthly payment', fmtMoney(summary.total), { size: 16, strong: true, gap: 4, rule: true })}
     </div>
   );

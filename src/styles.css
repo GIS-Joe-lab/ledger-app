@@ -189,6 +189,14 @@ input[type="time"].input {
 .input::-webkit-datetime-edit-fields-wrapper { padding: 0; }
 .input::-webkit-calendar-picker-indicator { margin-inline-start: auto; }
 
+/* A segmented control sitting to the left of a text/number input in one row. */
+.field-inline { display: flex; align-items: stretch; gap: 8px; flex-wrap: wrap; }
+.field-inline .seg { flex: none; }
+.field-inline .seg-opt { padding-inline: 12px; font-size: 13px; }
+.field-inline .input { flex: 1 1 8rem; min-width: 0; }
+.field-hint { margin-top: 6px; font-size: 12px; color: var(--color-ink-soft); }
+.field-hint strong { color: var(--color-text); font-weight: 600; }
+
 .radio { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font-size: 15px; }
 .radio input, .seg-opt input {
   position: absolute; opacity: 0; width: 0; height: 0; pointer-events: none;

@@ -20,9 +20,19 @@ export function monthlyMortgageTotal(mortgage) {
   // (escrowIncluded). Undefined means an entry made before this option existed,
   // which was always computed with escrow — so treat that as included.
   const escrowIncluded = mortgage.escrowIncluded !== false;
+
+  // Property tax may be entered as a yearly figure (what most bills quote) or a
+  // monthly one. `propertyTax` in the return is always the monthly amount that
+  // feeds the payment. A missing period means an entry made before this option
+  // existed, whose stored figure was always monthly.
+  const propertyTaxPeriod = mortgage.propertyTaxPeriod === 'year' ? 'year' : 'month';
+  const propertyTaxInput = Number(mortgage.propertyTax) || 0;
+  const propertyTaxAnnual = propertyTaxPeriod === 'year' ? propertyTaxInput : propertyTaxInput * 12;
+  const propertyTaxMonthly = propertyTaxPeriod === 'year' ? propertyTaxInput / 12 : propertyTaxInput;
+
   const homeInsurance = escrowIncluded ? (Number(mortgage.homeInsurance) || 0) : 0;
   const floodInsurance = escrowIncluded ? (Number(mortgage.floodInsurance) || 0) : 0;
-  const propertyTax = escrowIncluded ? (Number(mortgage.propertyTax) || 0) : 0;
+  const propertyTax = escrowIncluded ? propertyTaxMonthly : 0;
   const condoFee = escrowIncluded ? (Number(mortgage.condoFee) || 0) : 0;
   const escrow = homeInsurance + floodInsurance + propertyTax + condoFee;
   const extraPayment = Number(mortgage.extraPayment) || 0;
@@ -35,6 +45,8 @@ export function monthlyMortgageTotal(mortgage) {
     homeInsurance,
     floodInsurance,
     propertyTax,
+    propertyTaxPeriod,
+    propertyTaxAnnual: escrowIncluded ? propertyTaxAnnual : 0,
     condoFee,
     escrow,
     extraPayment,

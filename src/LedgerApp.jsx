@@ -52,6 +52,7 @@ export default class LedgerApp extends React.Component {
       formMortgageHomeInsurance: '',
       formMortgageFloodInsurance: '',
       formMortgagePropertyTax: '',
+      formMortgagePropertyTaxPeriod: 'year',
       formMortgageCondoFee: '',
       formMortgageEscrowIncluded: true,
       formMortgageExtraPayment: '',
@@ -138,7 +139,7 @@ export default class LedgerApp extends React.Component {
       formEarner: 'Me',
       formAutoPay: false, formAutoPayDate: '',
       formMortgageLoanAmount: '', formMortgageInterestRate: '', formMortgageTermYears: '30',
-      formMortgageHomeInsurance: '', formMortgageFloodInsurance: '', formMortgagePropertyTax: '', formMortgageCondoFee: '', formMortgageEscrowIncluded: true, formMortgageExtraPayment: '',
+      formMortgageHomeInsurance: '', formMortgageFloodInsurance: '', formMortgagePropertyTax: '', formMortgagePropertyTaxPeriod: 'year', formMortgageCondoFee: '', formMortgageEscrowIncluded: true, formMortgageExtraPayment: '',
     });
   }
 
@@ -159,6 +160,7 @@ export default class LedgerApp extends React.Component {
       formMortgageHomeInsurance: entry.mortgage ? String(m.homeInsurance) : '',
       formMortgageFloodInsurance: entry.mortgage ? String(m.floodInsurance) : '',
       formMortgagePropertyTax: entry.mortgage ? String(m.propertyTax) : '',
+      formMortgagePropertyTaxPeriod: entry.mortgage ? (m.propertyTaxPeriod || 'month') : 'year',
       formMortgageCondoFee: entry.mortgage ? String(m.condoFee || '') : '',
       formMortgageEscrowIncluded: entry.mortgage ? (m.escrowIncluded !== false) : true,
       formMortgageExtraPayment: entry.mortgage ? String(m.extraPayment) : '',
@@ -175,7 +177,7 @@ export default class LedgerApp extends React.Component {
   closeMortgageModal = () => this.setState({ mortgageModalOpen: false });
 
   getMortgageDraft() {
-    const { formMortgageLoanAmount, formMortgageInterestRate, formMortgageTermYears, formMortgageHomeInsurance, formMortgageFloodInsurance, formMortgagePropertyTax, formMortgageCondoFee, formMortgageEscrowIncluded, formMortgageExtraPayment } = this.state;
+    const { formMortgageLoanAmount, formMortgageInterestRate, formMortgageTermYears, formMortgageHomeInsurance, formMortgageFloodInsurance, formMortgagePropertyTax, formMortgagePropertyTaxPeriod, formMortgageCondoFee, formMortgageEscrowIncluded, formMortgageExtraPayment } = this.state;
     return {
       loanAmount: parseFloat(formMortgageLoanAmount) || 0,
       interestRate: parseFloat(formMortgageInterestRate) || 0,
@@ -183,6 +185,7 @@ export default class LedgerApp extends React.Component {
       homeInsurance: parseFloat(formMortgageHomeInsurance) || 0,
       floodInsurance: parseFloat(formMortgageFloodInsurance) || 0,
       propertyTax: parseFloat(formMortgagePropertyTax) || 0,
+      propertyTaxPeriod: formMortgagePropertyTaxPeriod,
       condoFee: parseFloat(formMortgageCondoFee) || 0,
       escrowIncluded: formMortgageEscrowIncluded,
       extraPayment: parseFloat(formMortgageExtraPayment) || 0,
@@ -389,7 +392,7 @@ export default class LedgerApp extends React.Component {
       formTitle, formAmount, formDate, formCategory, formDescription, formFrequency, formOngoing, formEndDate, formBankAccount, formEarner,
       formAutoPay, formAutoPayDate, mortgageModalOpen,
       formMortgageLoanAmount, formMortgageInterestRate, formMortgageTermYears,
-      formMortgageHomeInsurance, formMortgageFloodInsurance, formMortgagePropertyTax, formMortgageCondoFee, formMortgageEscrowIncluded, formMortgageExtraPayment } = this.state;
+      formMortgageHomeInsurance, formMortgageFloodInsurance, formMortgagePropertyTax, formMortgagePropertyTaxPeriod, formMortgageCondoFee, formMortgageEscrowIncluded, formMortgageExtraPayment } = this.state;
     const vm = this.computeViewModel();
     const { onSignOut, userEmail } = this.props;
 
@@ -504,6 +507,7 @@ export default class LedgerApp extends React.Component {
               loanAmount: formMortgageLoanAmount, interestRate: formMortgageInterestRate, termYears: formMortgageTermYears,
               escrowIncluded: formMortgageEscrowIncluded, homeInsurance: formMortgageHomeInsurance,
               floodInsurance: formMortgageFloodInsurance, propertyTax: formMortgagePropertyTax,
+              propertyTaxPeriod: formMortgagePropertyTaxPeriod,
               condoFee: formMortgageCondoFee, extraPayment: formMortgageExtraPayment,
             }}
             set={this.setMortgageField}
